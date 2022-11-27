@@ -1,0 +1,576 @@
+@media only screen and (max-width: 767px) {
+  .top-menu .ui.text.container {
+    display: block;
+    max-width: 100% !important;
+  }
+  .ui.container {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  #menu.ui.secondary.pointing.menu .item {
+    padding: 20px 15px;
+    margin-left: 0;
+    margin-right: 0;
+    border-bottom: 1px solid #ffd5d5 !important;
+  }
+  #menu.ui.secondary.pointing.menu .item .menu {
+    margin-top: 20px;
+  }
+  #menu.ui.secondary.pointing.menu .item .menu .item {
+    border: none !important;
+  }
+  #menu.ui.secondary.pointing.menu .right.menu .item {
+    top: 0;
+  }
+  #menu.ui.secondary.pointing.menu .right.menu .item .ui.form {
+    display: block;
+    width: 100%;
+  }
+  #menu.ui.secondary.pointing.menu .right.menu .item .ui.form .ui.transparent.icon.input {
+    display: block;
+    width: 100%;
+  }
+  #menu.ui.secondary.pointing.menu .right.menu .item .ui.form .ui.transparent.icon.input input[type=text] {
+    border: none !important;
+  }
+  .main-banner {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background-image: unset !important;
+  }
+  .main-banner-content {
+    text-align: center;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .main-banner-content .sub-title {
+    font-size: 14px;
+  }
+  .main-banner-content h1 {
+    margin-bottom: 10px;
+    font-size: 35px;
+  }
+  .main-banner-content p {
+    font-size: 15px;
+  }
+  .main-banner-content .btn-box {
+    margin-top: 25px;
+  }
+  .main-banner-content .btn-box .default-btn {
+    margin-right: 4px;
+  }
+  .main-banner-content .btn-box .optional-btn {
+    margin-left: 4px;
+  }
+  .default-btn {
+    padding: 9px 22px;
+    font-size: 13px;
+  }
+  .optional-btn {
+    padding: 9px 22px;
+    font-size: 13px;
+  }
+  .categories-banner-area {
+    padding-top: 60px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .categories-banner-area .ui.column.grid > [class*="four wide"].column, .categories-banner-area .ui.grid > .column.row > [class*="four wide"].column, .categories-banner-area .ui.grid > .row > [class*="four wide"].column, .categories-banner-area .ui.grid > [class*="four wide"].column {
+    width: 100% !important;
+  }
+  .single-categories-box {
+    margin-bottom: 0;
+  }
+  .single-categories-box .content {
+    padding: 10px 10px 0;
+  }
+  .single-categories-box .content span {
+    font-size: 14px;
+  }
+  .single-categories-box .content h3 {
+    font-size: 22px;
+  }
+  .offer-content {
+    max-width: 100%;
+    padding: 35px 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .offer-content span {
+    font-size: 15px;
+  }
+  .offer-content p {
+    font-size: 15px;
+    margin-top: 10px;
+  }
+  .offer-content h2 {
+    font-size: 30px;
+  }
+  .hot-products-area {
+    padding-top: 60px;
+    padding-bottom: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .single-products-box .content {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+  .single-products-box .content .header {
+    font-size: 20px !important;
+  }
+  .single-products-box .content .meta {
+    font-size: 15px !important;
+  }
+  .footer-area {
+    padding-top: 60px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .footer-area .ui.column.grid > [class*="four wide"].column, .footer-area .ui.grid > .column.row > [class*="four wide"].column, .footer-area .ui.grid > .row > [class*="four wide"].column, .footer-area .ui.grid > [class*="four wide"].column {
+    width: 100% !important;
+  }
+  .single-footer-widget {
+    margin-bottom: 0;
+  }
+  .single-footer-widget h3 {
+    font-size: 20px;
+  }
+  .single-footer-widget .about-the-store p {
+    font-size: 15px;
+  }
+  .single-footer-widget .quick-links li {
+    font-size: 15px;
+  }
+  .single-footer-widget .customer-support li {
+    font-size: 15px;
+  }
+  .single-footer-widget .footer-contact-info li {
+    font-size: 15px;
+  }
+  .footer-bottom-area {
+    margin-top: 50px;
+  }
+  .footer-bottom-area p {
+    line-height: 1.8;
+  }
+  .products-details-area {
+    max-width: 100%;
+  }
+  .products-details-area .ui.items:not(.unstackable) > .item > .image, .products-details-area .ui.items:not(.unstackable) > .item > .image > img {
+    padding: 0 !important;
+    max-height: 100% !important;
+  }
+  .products-details-area .ui.items .item .content {
+    margin-top: 10px;
+  }
+  .products-details-area .ui.items .item .content .header {
+    font-size: 20px !important;
+  }
+  .products-details-area .ui.header {
+    margin-top: 30px;
+    font-size: 18px;
+  }
+  .cart-area {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .cart-area .ui.segment {
+    max-width: 100%;
+  }
+  .cart-area .ui.segment .segment {
+    text-align: center;
+  }
+  .cart-area .ui.segment .segment .ui[class*="right floated"].button, .cart-area .ui.segment .segment .ui[class*="right floated"].buttons {
+    float: unset;
+    margin-top: 15px;
+  }
+  .about-area {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .about-area h3 {
+    font-size: 22px;
+    margin-bottom: 14px;
+  }
+  .about-area p {
+    font-size: 15px;
+  }
+  .create-new-products-area {
+    max-width: 100%;
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+  .profile-area {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .order-history-area {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .login-area {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .login-area .ui.green.message {
+    max-width: 100%;
+  }
+  .login-area .ui.warning.bottom.attached.message {
+    max-width: 100%;
+  }
+  .login-area .ui.form {
+    max-width: 100%;
+  }
+  .signup-area {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .signup-area .ui.green.message {
+    max-width: 100%;
+  }
+  .signup-area .ui.warning.bottom.attached.message {
+    max-width: 100%;
+  }
+  .signup-area .ui.form {
+    max-width: 100%;
+  }
+  .about-area .ui.column.grid > [class*="seven wide"].column, .about-area .ui.grid > .column.row > [class*="seven wide"].column, .about-area .ui.grid > .row > [class*="seven wide"].column, .about-area .ui.grid > [class*="seven wide"].column {
+    width: 100% !important;
+  }
+  .about-area .ui.column.grid > [class*="eight wide"].column, .about-area .ui.grid > .column.row > [class*="eight wide"].column, .about-area .ui.grid > .row > [class*="eight wide"].column, .about-area .ui.grid > [class*="eight wide"].column {
+    width: 100% !important;
+  }
+  .signup-area, .login-area {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  .profile-area h1 {
+    font-size: 25px !important;
+  }
+  .create-new-products-area .ui.block.header {
+    font-size: 20px;
+  }
+  .order-history-area h2.ui.header {
+    font-size: 20px;
+  }
+  .grocery-main-banner {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .grocery-banner-content {
+    max-width: 100%;
+  }
+  .grocery-banner-content h1 {
+    font-size: 28px;
+  }
+  .grocery-banner-content p {
+    font-size: 16px;
+  }
+  .grocery-banner-content h2 {
+    font-size: 30px;
+  }
+  .grocery-categories-banner-area {
+    padding-top: 60px;
+    padding-bottom: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .grocery-categories-banner-area .ui.column.grid > [class*="four wide"].column, .grocery-categories-banner-area .ui.grid > .column.row > [class*="four wide"].column, .grocery-categories-banner-area .ui.grid > .row > [class*="four wide"].column, .grocery-categories-banner-area .ui.grid > [class*="four wide"].column {
+    width: 100% !important;
+  }
+  .single-grocery-categories-box .content {
+    padding: 18px;
+  }
+  .single-grocery-categories-box .content span {
+    font-size: 16px;
+  }
+  .single-grocery-categories-box .content h3 {
+    font-size: 20px;
+  }
+  .grocery-products-area {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .section-title {
+    max-width: 100%;
+    margin-bottom: 45px;
+  }
+  .section-title sub-title {
+    font-size: 14px;
+  }
+  .section-title h2 {
+    font-size: 26px;
+    margin-top: 13px;
+  }
+  .single-grocery-products-box .content .header {
+    font-size: 20px !important;
+  }
+  .single-grocery-products-box .content .meta {
+    font-size: 15px !important;
+  }
+  .covid-main-banner {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .covid-banner-content {
+    max-width: 100%;
+    text-align: center;
+    padding: 0;
+  }
+  .covid-banner-content .line {
+    display: none;
+  }
+  .covid-banner-content .sub-title {
+    font-size: 18px;
+  }
+  .covid-banner-content h1 {
+    margin: 15px 0 15px;
+    font-size: 35px;
+  }
+  .covid-banner-content p {
+    max-width: 100%;
+    font-size: 16px;
+    font-weight: normal;
+  }
+  .navbar-area {
+    position: relative;
+  }
+  .navbar-area .brand.item {
+    font-weight: 700;
+  }
+  .navbar-area .ui.vertical.navbar.menu {
+    position: fixed;
+    z-index: 100;
+    left: 15px;
+  }
+  .navbar-area .ui.vertical.navbar.menu .item {
+    padding: 15px 15px;
+    font-size: 14px;
+  }
+  .navbar-area .ui.vertical.navbar.menu .ui.simple.pointing.left.dropdown.item .menu {
+    top: 0 !important;
+  }
+  .navbar-area .root-user {
+    border-top: 1px solid rgba(34, 36, 38, 0.1);
+  }
+  .navbar-area .root-user .item {
+    padding: 15px 15px !important;
+    font-size: 14px !important;
+    color: rgba(0, 0, 0, 0.87) !important;
+  }
+  .navbar-area .mobile-active-hide {
+    display: none !important;
+  }
+  .navbar-area .ui.form .ui.input {
+    display: block;
+  }
+  .navbar-area .ui.form .ui.input input {
+    height: 45px;
+  }
+  .products-details-tab .ui.menu {
+    display: block;
+  }
+  .products-details-tab .ui.menu .item {
+    display: inline-block;
+  }
+  .products-details-tab-content .row .col-6 {
+    width: 100%;
+  }
+  .products-details-tab-content .products-review-form .review-comments .review-item {
+    padding-right: 0;
+  }
+  .products-details-tab-content .products-review-form .review-title .default-btn {
+    padding: 9px 15px;
+    font-size: 12px;
+  }
+  .profile-root-user {
+    padding: 40px 0;
+  }
+  .profile-root-user h3 {
+    font-size: 25px;
+  }
+  .profile-root-user p {
+    font-size: 15px;
+  }
+  .jewelry-main-banner {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .jewelry-banner-content {
+    padding: 20px;
+  }
+  .jewelry-banner-content .line {
+    border: 2px solid #000000;
+  }
+  .jewelry-banner-content .sub-title {
+    font-size: 20px;
+  }
+  .jewelry-banner-content h1 {
+    font-size: 40px;
+  }
+}
+@media only screen and (max-width: 450px) {
+  .navbar-area .ui.vertical.navbar.menu {
+    position: fixed;
+    z-index: 100;
+    left: 15px;
+    width: 12rem;
+  }
+  .navbar-area .ui.vertical.navbar.menu .item.dropdown .menu .item i {
+    display: none;
+  }
+  .products-details-tab-content .products-review-form .review-title .default-btn {
+    position: initial;
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .create-new-products-area {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  .main-banner-content {
+    margin-left: 15px;
+  }
+  .main-banner-content h1 {
+    margin-bottom: 10px;
+    font-size: 55px;
+  }
+  .categories-banner-area .ui.column.grid > [class*="four wide"].column, .categories-banner-area .ui.grid > .column.row > [class*="four wide"].column, .categories-banner-area .ui.grid > .row > [class*="four wide"].column, .categories-banner-area .ui.grid > [class*="four wide"].column {
+    width: 50% !important;
+  }
+  .categories-banner-area .ui.column.grid > [class*="four wide"].column:nth-child(1) .single-categories-box, .categories-banner-area .ui.column.grid > [class*="four wide"].column:nth-child(2) .single-categories-box, .categories-banner-area .ui.grid > .column.row > [class*="four wide"].column:nth-child(1) .single-categories-box, .categories-banner-area .ui.grid > .column.row > [class*="four wide"].column:nth-child(2) .single-categories-box, .categories-banner-area .ui.grid > .row > [class*="four wide"].column:nth-child(1) .single-categories-box, .categories-banner-area .ui.grid > .row > [class*="four wide"].column:nth-child(2) .single-categories-box, .categories-banner-area .ui.grid > [class*="four wide"].column:nth-child(1) .single-categories-box, .categories-banner-area .ui.grid > [class*="four wide"].column:nth-child(2) .single-categories-box {
+    margin-bottom: 0;
+  }
+  .single-categories-box .content span {
+    font-size: 15px;
+  }
+  .single-categories-box .content h3 {
+    font-size: 25px;
+  }
+  #menu.ui.secondary.pointing.menu .item {
+    padding: 25px 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 14px;
+  }
+  #menu {
+    margin: 0;
+    padding: 0;
+    background-color: var(--mainColor);
+    border: none;
+  }
+  #menu.ui.secondary.pointing.menu .right.menu .item {
+    padding: 0 !important;
+    position: relative;
+    top: -10px;
+  }
+  .hot-products-area .ui.four.cards > .card {
+    width: calc(50% - 1.5em);
+  }
+  .offer-content {
+    max-width: 450px;
+    padding: 40px 20px;
+  }
+  .offer-content h2 {
+    font-size: 40px;
+  }
+  .footer-area .ui.column.grid > [class*="four wide"].column, .footer-area .ui.grid > .column.row > [class*="four wide"].column, .footer-area .ui.grid > .row > [class*="four wide"].column, .footer-area .ui.grid > [class*="four wide"].column {
+    width: 50% !important;
+  }
+  .about-area .ui.column.grid > [class*="seven wide"].column, .about-area .ui.grid > .column.row > [class*="seven wide"].column, .about-area .ui.grid > .row > [class*="seven wide"].column, .about-area .ui.grid > [class*="seven wide"].column {
+    width: 100% !important;
+  }
+  .about-area .ui.column.grid > [class*="eight wide"].column, .about-area .ui.grid > .column.row > [class*="eight wide"].column, .about-area .ui.grid > .row > [class*="eight wide"].column, .about-area .ui.grid > [class*="eight wide"].column {
+    width: 100% !important;
+  }
+  .grocery-banner-content h1 {
+    font-size: 45px;
+  }
+  .grocery-banner-content p {
+    font-size: 17px;
+  }
+  .grocery-banner-content h2 {
+    font-size: 40px;
+  }
+  .grocery-main-banner {
+    padding-top: 150px;
+    padding-bottom: 150px;
+  }
+  .grocery-categories-banner-area .ui.column.grid > [class*="four wide"].column, .grocery-categories-banner-area .ui.grid > .column.row > [class*="four wide"].column, .grocery-categories-banner-area .ui.grid > .row > [class*="four wide"].column, .grocery-categories-banner-area .ui.grid > [class*="four wide"].column {
+    width: 50% !important;
+  }
+  .single-grocery-categories-box {
+    margin-bottom: 0;
+  }
+  .single-grocery-categories-box .content h3 {
+    font-size: 25px;
+  }
+  .section-title h2 {
+    font-size: 30px;
+  }
+  .section-title .sub-title {
+    font-size: 16px;
+  }
+  .grocery-products-area .ui.four.cards > .card {
+    width: calc(50% - 1.5em);
+  }
+  .navbar-area .ui.menu .item {
+    padding: 25px 10px;
+    font-size: 14px;
+  }
+  .related-products-area .content .header {
+    font-size: 20px !important;
+  }
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .single-grocery-products-box .content .header {
+    font-size: 18px !important;
+  }
+  .single-categories-box .content {
+    padding: 10px 10px 0;
+  }
+  .single-categories-box .content h3 {
+    font-size: 20px;
+  }
+  .single-categories-box .content span {
+    font-size: 13px;
+  }
+  .single-products-box .content {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+  .single-products-box .content .header {
+    font-size: 18px !important;
+  }
+  .grocery-categories-banner-area .ui.column.grid > [class*="four wide"].column, .grocery-categories-banner-area .ui.grid > .column.row > [class*="four wide"].column, .grocery-categories-banner-area .ui.grid > .row > [class*="four wide"].column, .grocery-categories-banner-area .ui.grid > [class*="four wide"].column {
+    width: 50% !important;
+  }
+  .single-grocery-categories-box {
+    margin-bottom: 0;
+  }
+}
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+  .navbar-area .ui.menu .item {
+    padding: 25px 16px;
+  }
+}/*# sourceMappingURL=responsive.css.map */
