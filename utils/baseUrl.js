@@ -1,5 +1,6 @@
-const baseUrl = process.env.NODE_ENV === "production" 
-? 'https://shoponix.envytheme.com' 
-: 'http://localhost:3000';
+const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_VERCEL_URL
+    : "http://localhost:3000";
 
 export default baseUrl;
