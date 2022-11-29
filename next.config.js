@@ -21,6 +21,5 @@ const nextConfig = {
   },
   trailingSlash: true,
   optimizeFonts: false,
-  distDir: "build",
 };
 module.exports = nextConfig;
