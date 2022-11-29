@@ -8,11 +8,6 @@ import baseUrl from "../utils/baseUrl";
 
 const Home = ({ products }) => {
   // console.log(products)
-  console.log("baseUrl: ", baseUrl);
-  if (process.env.NODE_ENV === "production") {
-    console.log("next public vercel url: ", process.env.NEXT_PUBLIC_VERCEL_URL);
-    console.log(" vercel url: ", process.env.VERCEL_URL);
-  }
   return (
     <>
       <Banner />
