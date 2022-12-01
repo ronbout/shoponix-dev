@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  password  String
+  role      Role      @default(user)
+  Product   Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Store     Store[]
+  Order     Order[]
+  Cart      Cart[]
+}
+
+enum Role {
+  user
+  admin
+  root
+}
+
+model Product {
+  id            String          @id @default(uuid())
+  name          String
+  price         Decimal
+  productType   String
+  sku           String          @unique
+  description   String
+  mediaUrl      String
+  viewCount     Int
+  user          User            @relation(fields: [userId], references: [id])
+  userId        String
+  store         Store           @relation(fields: [storeId], references: [id])
+  storeId       String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  OrderProducts OrderProducts[]
+  CartProducts  CartProducts[]
+
+  @@index([name])
+}
+
+model Store {
+  id        String      @id @default(uuid())
+  name      String
+  email     String
+  web       String?
+  aboutText String
+  status    StoreStatus @default(pending)
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String
+  Product   Product[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([name])
+  @@index([email])
+}
+
+enum StoreStatus {
+  pending
+  approved
+  declined
+}
+
+model Order {
+  id            String          @id @default(uuid())
+  email         String
+  total         Decimal
+  status        OrderStatus     @default(pending)
+  user          User            @relation(fields: [userId], references: [id])
+  userId        String
+  OrderProducts OrderProducts[]
+}
+
+enum OrderStatus {
+  pending
+  delivered
+}
+
+model OrderProducts {
+  id       String  @id @default(uuid())
+  quantity Int
+  order    Order   @relation(fields: [orderId], references: [id])
+  product  Product @relation(fields: [productId], references: [id])
+
+  productId String
+  orderId   String
+}
+
+model Cart {
+  id           String         @id @default(uuid())
+  user         User           @relation(fields: [userId], references: [id])
+  userId       String
+  CartProducts CartProducts[]
+}
+
+model CartProducts {
+  id       String  @id @default(uuid())
+  quantity Int
+  cart     Cart    @relation(fields: [cartId], references: [id])
+  product  Product @relation(fields: [productId], references: [id])
+
+  productId String
+  cartId    String
+}
