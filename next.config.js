@@ -11,7 +11,7 @@ const nextConfig = {
     //   // CLOUDINARY_URL:
     //   //   "cloudinary://783796461164214:aC71NfvndxLkhZtIA_2Jk3r7MhI@dhrcafda6",
     //   CLOUDINARY_URL: "https://api.cloudinary.com/v1_1/dhrcafda6/image/upload",
-    STRIPE_SECRET_KEY: "xxx", // Update here your STRIPE_SECRET_KEY
+    // STRIPE_SECRET_KEY: "xxx", // Update here your STRIPE_SECRET_KEY
   },
 
   // reactStrictMode: true,

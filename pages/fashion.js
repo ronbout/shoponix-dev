@@ -7,7 +7,7 @@ import HotProducts from "../components/Fashion/HotProducts";
 import baseUrl from "../utils/baseUrl";
 
 const Home = ({ products }) => {
-  // console.log(products)
+  console.log("prodcuts: ", products);
   return (
     <>
       <Banner />

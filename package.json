@@ -9,7 +9,7 @@
     "build": "next build"
   },
   "dependencies": {
-    "@prisma/client": "^4.7.0",
+    "@prisma/client": "^4.7.1",
     "apexcharts": "^3.25.0",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
@@ -32,7 +32,7 @@
     "validator": "^11.1.0"
   },
   "devDependencies": {
-    "prisma": "^4.7.0",
+    "prisma": "^4.7.1",
     "sass": "^1.55.0"
   }
 }
