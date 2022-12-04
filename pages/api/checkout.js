@@ -1,9 +1,8 @@
 import Stripe from "stripe";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
-import Cart from "../../models/Cart";
-import Order from "../../models/Order";
 import calculateCartTotal from "../../utils/calculateCartTotal";
+import prisma from "../../lib/prisma";
 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -15,9 +14,19 @@ export default async (req, res) => {
       req.headers.authorization,
       process.env.JWT_SECRET
     );
-    const cart = await Cart.findOne({ user: userId }).populate({
-      path: "products.product",
-      model: "Product",
+    // const cart = await Cart.findOne({ user: userId }).populate({
+    //   path: "products.product",
+    //   model: "Product",
+    // });
+    const cart = await prisma.cart.findFirst({
+      where: { userId },
+      include: {
+        CartProducts: {
+          include: {
+            product: true,
+          },
+        },
+      },
     });
     const { cartTotal, stripeTotal } = calculateCartTotal(cart.products);
     const prevCustomer = await stripe.customers.list({
@@ -47,14 +56,29 @@ export default async (req, res) => {
       }
     );
 
-    await new Order({
-      user: userId,
-      email: paymentData.email,
-      total: cartTotal,
-      products: cart.products,
-    }).save();
+    await prisma.order.create({
+      data: {
+        userId,
+        email: paymentData.email,
+        total: cartTotal,
+        products: cart.products,
+      },
+    });
 
-    await Cart.findOneAndUpdate({ _id: cart._id }, { $set: { products: [] } });
+    // await new Order({
+    //   user: userId,
+    //   email: paymentData.email,
+    //   total: cartTotal,
+    //   products: cart.products,
+    // }).save();
+
+    await prisma.cartProducts.delete({
+      where: {
+        cartId: cart.id,
+      },
+    });
+
+    // await Cart.findOneAndUpdate({ _id: cart._id }, { $set: { products: [] } });
 
     res.status(200).send("Checkout successful!");
   } catch (error) {

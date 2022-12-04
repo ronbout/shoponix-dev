@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-import Cart from "../../models/Cart";
-import connectDb from "../../utils/connectDb";
 import prisma from "../../lib/prisma";
-
-connectDb();
 
 const { ObjectId } = mongoose.Types;
 
@@ -37,8 +33,10 @@ const handleGetRequest = async (req, res) => {
     const cart = await prisma.cart.findFirst({
       where: { userId },
       include: {
-        cartProducts: {
-          product: true,
+        CartProducts: {
+          include: {
+            product: true,
+          },
         },
       },
     });
@@ -46,7 +44,8 @@ const handleGetRequest = async (req, res) => {
     //   path: "products.product",
     //   model: "Product",
     // });
-    res.status(200).json(cart.products);
+    const products = cart.CartProducts ? cart.CartProducts : [];
+    res.status(200).json(products);
   } catch (error) {
     // console.error(error);
     res.status(403).send("Please login");
@@ -68,10 +67,11 @@ const handlePutRequest = async (req, res) => {
     // const productExists = cart.products.some(doc => ObjectId(productId).equals (doc.product));
     const productExists = await prisma.cartProducts.findFirst({
       where: {
-        cartid: cart.id,
+        cartId: cart.id,
         productId: productId,
       },
     });
+
     if (productExists) {
       await prisma.cartProducts.update({
         where: {
@@ -88,7 +88,7 @@ const handlePutRequest = async (req, res) => {
       //     { $inc: { "prodcts.$.quantity": quantity } }
       // )
     } else {
-      const newProduct = { quantity, product: productId };
+      // const newProduct = { quantity, product: productId };
       await prisma.cartProducts.create({
         data: {
           quantity,
@@ -119,8 +119,10 @@ const handleDeleteRequest = async (req, res) => {
       req.headers.authorization,
       process.env.JWT_SECRET
     );
+    // const userId = "a6e52b56-c683-4ebe-815b-fda653fc13e1";
     let cart = await prisma.cart.findFirst({ where: { userId } });
-    await prisma.cartProducts.delete({
+    // res.status(200).json(cart);
+    await prisma.cartProducts.deleteMany({
       where: {
         productId,
         cartId: cart.id,
@@ -128,12 +130,8 @@ const handleDeleteRequest = async (req, res) => {
     });
     const cartProducts = await prisma.cartProducts.findMany({
       where: { cartId: cart.id },
-      select: {
-        productId: {
-          include: {
-            product: true,
-          },
-        },
+      include: {
+        product: true,
       },
     });
     // const cart = await Cart.findOneAndUpdate(
@@ -144,7 +142,9 @@ const handleDeleteRequest = async (req, res) => {
     //   path: "products.product",
     //   model: "Product",
     // });
-    res.status(200).json(cartProducts);
+
+    const products = cartProducts ? cartProducts : [];
+    res.status(200).json(products);
   } catch (error) {
     console.error(error);
     res.status(403).send("Please login");

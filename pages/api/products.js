@@ -1,8 +1,4 @@
-// import Product from "../../models/Product";
-// import connectDb from "../../utils/connectDb";
 import prisma from "../../lib/prisma";
-
-// connectDb();
 
 export default async (req, res) => {
   try {

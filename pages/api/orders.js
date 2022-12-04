@@ -38,10 +38,10 @@ const handleGetRequest = async (req, res) => {
 };
 
 const handlePutRequest = async (req, res) => {
-  const { _id, status } = req.body;
+  const { id, status } = req.body;
   await prisma.order.update({
     where: {
-      id: _id,
+      id: id,
     },
     data: {
       status,

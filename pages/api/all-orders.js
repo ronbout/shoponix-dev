@@ -1,15 +1,21 @@
-import Order from '../../models/Order';
-import connectDb from '../../utils/connectDb';
-// Connect DB
-connectDb();
+import prisma from "../../lib/prisma";
 
 export default async (req, res) => {
-    const orders = await Order.find()
-        .sort({ createdAt: 'desc' })
-        .populate({
-            path: "products.product",
-            model: "Product"
-        });
-    // console.log(orders)
-    res.status(200).json({ orders });
-}
+  const orders = await prisma.order.findMany({
+    include: {
+      OrderProducts: {
+        include: {
+          product: true,
+        },
+      },
+    },
+  });
+  // const orders = await Order.find()
+  //     .sort({ createdAt: 'desc' })
+  //     .populate({
+  //         path: "products.product",
+  //         model: "Product"
+  //     });
+  // console.log(orders)
+  res.status(200).json({ orders });
+};

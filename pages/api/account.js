@@ -37,10 +37,10 @@ const handleGetRequest = async (req, res) => {
 };
 
 const handlePutRequest = async (req, res) => {
-  const { _id, role } = req.body;
+  const { id, role } = req.body;
   await prisma.user.update({
     where: {
-      id: _id,
+      id,
     },
     data: {
       role,

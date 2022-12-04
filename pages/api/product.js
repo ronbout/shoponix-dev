@@ -1,11 +1,5 @@
 import shortid from "shortid";
-import Product from "../../models/Product";
-import Cart from "../../models/Cart";
-import Order from "../../models/Order";
-import connectDb from "../../utils/connectDb";
 import prisma from "../../lib/prisma";
-
-connectDb();
 
 export default async (req, res) => {
   switch (req.method) {
@@ -38,7 +32,7 @@ const handleGetRequest = async (req, res) => {
     },
   });
   // const product = await Product.findOneAndUpdate(
-  //   { _id: id },
+  //   { id: id },
   //   { $inc: { viewCount: 1 } }
   // );
   const { productType } = product;
@@ -101,11 +95,11 @@ const handlePostRequest = async (req, res) => {
 
 const handlePutRequest = async (req, res) => {
   // console.log(req.body)
-  const { _id, name, price, description, productType, mediaUrl } = req.body;
+  const { id, name, price, description, productType, mediaUrl } = req.body;
 
   await prisma.product.update({
     where: {
-      id: _id,
+      id: id,
     },
     data: {
       name,
@@ -117,7 +111,7 @@ const handlePutRequest = async (req, res) => {
   });
 
   // await Product.updateOne(
-  //   { _id },
+  //   { id },
   //   {
   //     $set: { name, price, description, productType, mediaUrl },
   //     $currentDate: { updatedAt: true },
@@ -128,31 +122,31 @@ const handlePutRequest = async (req, res) => {
 };
 
 const handleDeleteRequest = async (req, res) => {
-  const { _id } = req.query;
+  const { id } = req.query;
   try {
     await prisma.product.delete({
       where: {
-        id: _id,
+        id: id,
       },
     });
     await prisma.orderProducts.delete({
       where: {
-        productId: _id,
+        productId: id,
       },
     });
     await prisma.cartProducts.delete({
       where: {
-        productId: _id,
+        productId: id,
       },
     });
-    // await Product.findByIdAndDelete({ _id });
+    // await Product.findByIdAndDelete({ id });
     // await Cart.updateMany(
-    //   { "products.product": _id },
-    //   { $pull: { products: { product: _id } } }
+    //   { "products.product": id },
+    //   { $pull: { products: { product: id } } }
     // );
     // await Order.updateMany(
-    //   { "products.product": _id },
-    //   { $pull: { products: { product: _id } } }
+    //   { "products.product": id },
+    //   { $pull: { products: { product: id } } }
     // );
     res.status(204).json({});
   } catch (error) {
