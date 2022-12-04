@@ -99,8 +99,8 @@ const AddProduct = ({ user, store }) => {
         description,
         productType,
         mediaUrl,
-        userId: user._id,
-        storeId: store._id,
+        userId: user.id,
+        storeId: store.id,
       };
       const response = await axios.post(url, payload);
       // console.log(response)

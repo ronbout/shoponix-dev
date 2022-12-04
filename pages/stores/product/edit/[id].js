@@ -31,7 +31,7 @@ const options = [
 const Edit = ({ user, getProduct, store }) => {
   // console.log(getProduct)
   const [product, setProduct] = React.useState({
-    _id: getProduct._id,
+    id: getProduct.id,
     name: getProduct.name,
     price: getProduct.price,
     productType: getProduct.productType,
@@ -91,8 +91,8 @@ const Edit = ({ user, getProduct, store }) => {
       const mediaUrl = imageUrl.replace(/^http:\/\//i, "https://");
       // console.log(mediaUrl)
       const url = `${baseUrl}/api/product`;
-      const { _id, name, price, description, productType } = product;
-      const payload = { _id, name, price, description, productType, mediaUrl };
+      const { id, name, price, description, productType } = product;
+      const payload = { id, name, price, description, productType, mediaUrl };
       await axios.put(url, payload);
       setLoading(false);
       // console.log({response})

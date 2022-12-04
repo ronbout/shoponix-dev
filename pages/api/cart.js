@@ -84,7 +84,7 @@ const handlePutRequest = async (req, res) => {
         },
       });
       // await Cart.findOneAndUpdate(
-      //     { _id: cart._id, "products.product":  productId},
+      //     { id: cart.id, "products.product":  productId},
       //     { $inc: { "prodcts.$.quantity": quantity } }
       // )
     } else {
@@ -97,7 +97,7 @@ const handlePutRequest = async (req, res) => {
         },
       });
       // await Cart.findByIdAndUpdate(
-      //     { _id: cart._id },
+      //     { id: cart.id },
       //     { $addToSet: { products: newProduct } }
       // )
     }

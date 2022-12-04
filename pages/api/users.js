@@ -19,7 +19,7 @@ export default async (req, res) => {
       },
     });
 
-    // const users = await User.find({ _id: {$ne: userId} }).sort({role: 'asc'});
+    // const users = await User.find({ id: {$ne: userId} }).sort({role: 'asc'});
     res.status(200).json(users);
   } catch (error) {
     // console.error(error)

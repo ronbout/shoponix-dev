@@ -18,7 +18,7 @@ const OrdersHistory = ({ orders = [] }) => {
 
   const mapOrdersToPanels = (orders) => {
     return orders.map((order) => ({
-      key: order._id,
+      key: order.id,
       title: {
         content: (
           <>
@@ -56,7 +56,7 @@ const OrdersHistory = ({ orders = [] }) => {
             </List.Header>
             <List>
               {order.products.map((p) => (
-                <List.Item key={p.product._id}>
+                <List.Item key={p.product.id}>
                   <Image avatar src={p.product.mediaUrl} />
                   <List.Content>
                     <List.Header>{p.product.name}</List.Header>

@@ -55,6 +55,6 @@ const handlePutRequest = async (req, res) => {
       status,
     },
   });
-  // await Store.findOneAndUpdate({ _id }, { status });
+  // await Store.findOneAndUpdate({ id }, { status });
   res.status(203).send(`Request ${status}`);
 };

@@ -78,7 +78,7 @@ export default async (req, res) => {
       },
     });
 
-    // await Cart.findOneAndUpdate({ _id: cart._id }, { $set: { products: [] } });
+    // await Cart.findOneAndUpdate({ id: cart.id }, { $set: { products: [] } });
 
     res.status(200).send("Checkout successful!");
   } catch (error) {
