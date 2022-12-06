@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
+
+body {
+  padding-top: 12px;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  q,
+  p {
+    font-family: Poppins, sans-serif !important;
+  }
+}
+
+.mo-header {
+  nav {
+    margin: 10px auto 80px;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-content: flex-end;
+    border-bottom: 1px solid #ddd;
+    max-width: 920px;
+
+    .logo {
+      margin-right: auto;
+      color: blue;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style: none;
+      display: flex;
+      justify-content: flex-end;
+      align-content: flex-end;
+      li {
+        margin-left: 12px;
+      }
+    }
+  }
+}
+
+.register {
+  q {
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .register-type {
+    margin-top: 8px;
+    margin-bottom: 64px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+
+    div {
+      margin-right: 24px;
+    }
+    img {
+      margin-left: 8px;
+    }
+  }
+
+  .huge {
+    font-size: 128px;
+  }
+  .upside-down {
+    transform: rotate(90deg);
+  }
+}
+
+.signup-container {
+  max-width: 1071px;
+  margin: 36px auto;
+}

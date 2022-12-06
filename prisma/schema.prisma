@@ -12,10 +12,11 @@ datasource db {
 
 model User {
   id        String    @id @default(uuid())
-  name      String
+  firstname String
+  lastname  String
   email     String    @unique
   password  String
-  role      Role      @default(user)
+  role      Role      @default(parent)
   Product   Product[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -25,7 +26,8 @@ model User {
 }
 
 enum Role {
-  user
+  parent
+  club
   admin
   root
 }

@@ -15,7 +15,11 @@ export default async (req, res) => {
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
         expiresIn: "7d",
       });
-      res.status(200).json(token);
+      const body = JSON.stringify({
+        token,
+        role: user.role,
+      });
+      res.status(200).json(body);
     } else {
       res.status(401).send("Password not match");
     }

@@ -1,17 +1,18 @@
 import React from "react";
-import { Button, Form, Icon, Message, Segment } from "semantic-ui-react";
 import Link from "next/link";
+import axios from "axios";
+import { Button, Form, Icon, Message, Segment } from "semantic-ui-react";
 import catchErrors from "../../utils/catchErrors";
 import baseUrl from "../../utils/baseUrl";
-import axios from "axios";
 import { handleLogin } from "../../utils/auth";
 
 const INITIAL_USER = {
+  name: "",
   email: "",
   password: "",
 };
 
-const Login = () => {
+const Signup = () => {
   const [user, setUser] = React.useState(INITIAL_USER);
   const [disabled, setDisabled] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
@@ -32,11 +33,10 @@ const Login = () => {
     try {
       setLoading(true);
       setError("");
-      const url = `${baseUrl}/api/login`;
+      const url = `${baseUrl}/api/signup`;
       const payload = { ...user };
       const response = await axios.post(url, payload);
-      const resp = JSON.parse(response.data);
-      handleLogin(resp.token, resp.role, false);
+      handleLogin(response.data);
     } catch (error) {
       catchErrors(error, setError);
     } finally {
@@ -45,12 +45,12 @@ const Login = () => {
   };
 
   return (
-    <div className="login-area">
+    <div className="signup-area">
       <Message
         attached
-        icon="privacy"
-        header="Welcome Back!"
-        content="Login with email and password"
+        icon="settings"
+        header="Get Started"
+        content="Create a new account"
         color="green"
       />
 
@@ -58,6 +58,17 @@ const Login = () => {
         <Message error header="Oops!" content={error} />
 
         <Segment>
+          <Form.Input
+            fluid
+            icon="user"
+            iconPosition="left"
+            label="Name"
+            placeholder="Name"
+            name="name"
+            value={user.name}
+            onChange={handleChange}
+          />
+
           <Form.Input
             fluid
             icon="envelope"
@@ -83,9 +94,9 @@ const Login = () => {
           />
 
           <Button
-            icon="sign-in"
+            icon="signup"
             type="submit"
-            content="Login Now"
+            content="Signup Now"
             color="green"
             disabled={disabled || loading}
           />
@@ -94,9 +105,9 @@ const Login = () => {
 
       <Message attached="bottom" warning>
         <Icon name="help" />
-        Not an account?{" "}
-        <Link href="/auth/signup">
-          <a>Signup here</a>
+        Existing user?{" "}
+        <Link href="/auth/login">
+          <a>Login here</a>
         </Link>{" "}
         instead.
       </Message>
@@ -104,4 +115,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
