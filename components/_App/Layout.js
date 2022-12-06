@@ -38,7 +38,7 @@ const Layout = ({ children, user, store }) => {
         />
       </Head>
 
-      {/*<StaticHeader user={user} store={store} />*/}
+      <StaticHeader user={user} store={store} />
       <MoHeader user={user} />
 
       <Container fluid>{children}</Container>
