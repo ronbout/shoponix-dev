@@ -15,14 +15,20 @@ model User {
   firstname String
   lastname  String
   email     String    @unique
+  phone     String?
+  address   String?
+  address2  String?
+  city      String?
+  state     String?
+  zip       String?
   password  String
   role      Role      @default(parent)
-  Product   Product[]
+  product   Product[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  Store     Store[]
-  Order     Order[]
-  Cart      Cart[]
+  store     Store[]
+  club      Club?
+  parent    Parent?
 }
 
 enum Role {
@@ -30,6 +36,42 @@ enum Role {
   club
   admin
   root
+}
+
+model Club {
+  id           String   @id @default(uuid())
+  clubname     String
+  billAddress  String?
+  billAddress2 String?
+  billCity     String?
+  billState    String?
+  billZip      String?
+  bankIBAN     String?
+  bankBIC      String?
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String   @unique
+  parents      Parent[]
+}
+
+model Parent {
+  id        String      @id @default(uuid())
+  firstname String
+  lastname  String
+  relation  ParentRole?
+  birthday  String?
+  order     Order[]
+  cart      Cart[]
+  club      Club?       @relation(fields: [clubId], references: [id])
+  clubId    String?
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+}
+
+enum ParentRole {
+  Mom
+  Dad
+  Other
 }
 
 model Product {
@@ -47,8 +89,8 @@ model Product {
   storeId       String?
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
-  OrderProducts OrderProducts[]
-  CartProducts  CartProducts[]
+  orderProducts OrderProducts[]
+  cartProducts  CartProducts[]
 
   @@index([name])
 }
@@ -62,7 +104,7 @@ model Store {
   status    StoreStatus @default(pending)
   user      User?       @relation(fields: [userId], references: [id])
   userId    String?
-  Product   Product[]
+  product   Product[]
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 
@@ -81,9 +123,9 @@ model Order {
   email         String
   total         Decimal
   status        OrderStatus     @default(pending)
-  user          User            @relation(fields: [userId], references: [id])
-  userId        String
-  OrderProducts OrderProducts[]
+  parent        Parent          @relation(fields: [parentId], references: [id])
+  parentId      String
+  orderProducts OrderProducts[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }
@@ -105,9 +147,9 @@ model OrderProducts {
 
 model Cart {
   id           String         @id @default(uuid())
-  user         User           @relation(fields: [userId], references: [id])
-  userId       String
-  CartProducts CartProducts[]
+  parent       Parent         @relation(fields: [parentId], references: [id])
+  parentId     String
+  cartProducts CartProducts[]
 }
 
 model CartProducts {

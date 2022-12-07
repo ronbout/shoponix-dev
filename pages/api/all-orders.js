@@ -3,7 +3,7 @@ import prisma from "../../lib/prisma";
 export default async (req, res) => {
   const orders = await prisma.order.findMany({
     include: {
-      OrderProducts: {
+      orderProducts: {
         include: {
           product: true,
         },

@@ -10,14 +10,16 @@ body {
   h5,
   h6,
   q,
-  p {
+  p,
+  label,
+  span {
     font-family: Poppins, sans-serif !important;
   }
 }
 
 .mo-header {
   nav {
-    margin: 10px auto 80px;
+    margin: 10px auto 50px;
     padding: 10px;
     display: flex;
     justify-content: flex-end;
@@ -76,4 +78,67 @@ body {
 .signup-container {
   max-width: 1071px;
   margin: 36px auto;
+}
+
+.club-fees-container {
+  max-width: 1200px;
+  margin: 0 auto 30px;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .fee-fields {
+    margin: 32px 0;
+    padding: 12px;
+    display: flex;
+    > div {
+      width: 50%;
+    }
+  }
+
+  .period-check {
+    margin: 12px;
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    label {
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 32px;
+      margin-right: 18px;
+    }
+    input[type="checkbox"] {
+      height: 20px;
+      width: 20px;
+      accent-color: black;
+    }
+  }
+
+  .member-container {
+    display: flex;
+
+    div:first-child {
+      width: 40%;
+    }
+    div:last-child {
+      width: 60%;
+    }
+  }
+
+  .club-fees-totals {
+    text-align: right;
+    font-weight: 700;
+
+    h4 {
+      display: inline-block;
+      margin-right: 64px;
+    }
+
+    span {
+      min-width: 180px;
+      display: inline-block;
+    }
+  }
 }

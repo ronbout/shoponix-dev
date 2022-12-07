@@ -33,7 +33,7 @@ const handleGetRequest = async (req, res) => {
     const cart = await prisma.cart.findFirst({
       where: { userId },
       include: {
-        CartProducts: {
+        cartProducts: {
           include: {
             product: true,
           },

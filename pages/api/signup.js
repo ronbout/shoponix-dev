@@ -5,8 +5,15 @@ import isLength from "validator/lib/isLength";
 import prisma from "../../lib/prisma";
 
 export default async (req, res) => {
-  const { firstname, lastname, email, password, password2, userType } =
-    req.body;
+  const {
+    firstname,
+    lastname,
+    clubname = "",
+    email,
+    password,
+    password2,
+    userType,
+  } = req.body;
 
   const passLength = 2; // for testing not typing 8!!
 
@@ -20,6 +27,10 @@ export default async (req, res) => {
         .send("Password must be at least 8 characters long");
     } else if (password !== password2) {
       return res.status(422).send("Passwords must match");
+    } else if ("club" === userType && !isLength(clubname, { min: 3 })) {
+      return res
+        .status(422)
+        .send("Clubname must be at least 3 characters long");
     }
 
     const user = await prisma.user.findUnique({
@@ -32,27 +43,59 @@ export default async (req, res) => {
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const newUser = await prisma.user.create({
-      data: {
-        firstname,
-        lastname,
-        email,
-        role: userType,
-        password: passwordHash,
-      },
-    });
+    let newUser;
+    if ("club" === userType) {
+      newUser = await prisma.user.create({
+        data: {
+          firstname,
+          lastname,
+          email,
+          role: userType,
+          password: passwordHash,
+          club: {
+            create: {
+              clubname,
+            },
+          },
+        },
+        include: {
+          parent: true,
+          club: true,
+        },
+      });
+    } else {
+      newUser = await prisma.user.create({
+        data: {
+          firstname,
+          lastname,
+          email,
+          role: userType,
+          password: passwordHash,
+          parent: {
+            create: {
+              firstname,
+              lastname,
+            },
+          },
+        },
+        include: {
+          parent: true,
+          club: true,
+        },
+      });
 
+      // create a cart for the new parent
+      const cart = await prisma.cart.create({
+        data: {
+          parentId: newUser.parent.id,
+        },
+      });
+    }
     delete newUser.password;
     delete newUser.createdAt;
     delete newUser.updatedAt;
 
     // console.log(newUser);
-    // create a cart for the new user
-    // const cart = await prisma.cart.create({
-    //   data: {
-    //     userId: newUser.id,
-    //   },
-    // });
 
     const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, {
       expiresIn: "7d",

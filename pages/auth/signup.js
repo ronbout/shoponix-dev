@@ -20,6 +20,7 @@ const Signup = () => {
   const [user, setUser] = useState({
     firstname: "",
     lastname: "",
+    ...("club" === router.query.type && { clubname: "" }),
     email: "",
     password: "",
     password2: "",
@@ -29,6 +30,12 @@ const Signup = () => {
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  let userTypeDisp;
+  if ("club" === user.userType) {
+    userTypeDisp = "Club";
+  } else {
+    userTypeDisp = "Parent";
+  }
 
   // console.log("userType ", user.userType);
 
@@ -54,6 +61,7 @@ const Signup = () => {
       const url = `${baseUrl}/api/signup`;
       const payload = { ...user };
       const response = await axios.post(url, payload);
+      console.log("sign up return: ", response.data);
       handleLogin(response.data, user.userType, true);
     } catch (error) {
       catchErrors(error, setError);
@@ -65,7 +73,7 @@ const Signup = () => {
   return (
     <Container className="signup-container">
       <div>
-        <h2>Create an account</h2>
+        <h2>Create a {userTypeDisp} account</h2>
         <p>
           Already have an account?
           <Link href="/auth/login"> Log in</Link>
@@ -97,6 +105,18 @@ const Signup = () => {
                   onChange={handleChange}
                 />
               </Form.Group>
+              {"club" === user.userType ? (
+                <Form.Input
+                  fluid
+                  label="Club Name"
+                  name="clubname"
+                  type="text"
+                  value={user.clubname}
+                  onChange={handleChange}
+                />
+              ) : (
+                ""
+              )}
 
               <Form.Input
                 fluid

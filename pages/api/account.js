@@ -24,7 +24,15 @@ const handleGetRequest = async (req, res) => {
       req.headers.authorization,
       process.env.JWT_SECRET
     );
-    const user = await prisma.User.findUnique({ where: { id: userId } });
+    const user = await prisma.User.findUnique({
+      where: { id: userId },
+      include: {
+        parent: true,
+        club: true,
+      },
+    });
+
+    delete user.password;
     const store = await prisma.store.findFirst({ where: { userId } });
     if (user) {
       res.status(200).json({ user, store });
