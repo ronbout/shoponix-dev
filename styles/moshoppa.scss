@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400,700&display=swap");
 
 body {
   padding-top: 48px;
@@ -80,7 +80,9 @@ body {
   margin: 36px auto;
 }
 
-.club-fees-container {
+.club-fees-container,
+.club-donations-container,
+.club-details-container {
   max-width: 1200px;
   margin: 0 auto 30px;
 
@@ -140,5 +142,14 @@ body {
       min-width: 180px;
       display: inline-block;
     }
+  }
+}
+
+.club-details-container {
+  .soccer-pass-container,
+  .soccer-details-container {
+    text-align: center;
+    width: 630px;
+    margin: 32px auto;
   }
 }

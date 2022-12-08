@@ -14,6 +14,7 @@ import {
 } from "semantic-ui-react";
 import catchErrors from "../utils/catchErrors";
 import baseUrl from "../utils/baseUrl";
+import currency from "../utils/currency";
 import states from "../utils/states.json";
 
 const ProfileClubFees = ({ user }) => {
@@ -79,14 +80,6 @@ const ProfileClubFees = ({ user }) => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const currency = (n, digits = 2) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: digits,
-    }).format(n);
   };
 
   return (

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import Image from "next/image";
 import axios from "axios";
 import {
@@ -14,57 +14,28 @@ import {
 } from "semantic-ui-react";
 import catchErrors from "../utils/catchErrors";
 import baseUrl from "../utils/baseUrl";
+import currency from "../utils/currency";
 import states from "../utils/states.json";
 
 const ProfileClubDonations = ({ user }) => {
   const router = useRouter();
-  const [clubFees, setClubFees] = useState({
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    zipcode: "",
+  const [donations, setDonations] = useState({
+    accountName: "",
+    bankIBAN: "",
+    bankBIC: "",
   });
-  const [feePeriod, setFeePeriod] = useState("month");
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [totalFees, setTotalFees] = useState(50);
 
   useEffect(() => {
-    const isClubFees = Object.values(clubFees).every((el) => Boolean(el));
-    isClubFees ? setDisabled(false) : setDisabled(true);
-  }, [clubFees]);
+    const isdonations = Object.values(donations).every((el) => Boolean(el));
+    isdonations ? setDisabled(false) : setDisabled(true);
+  }, [donations]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setClubFees((prevState) => ({ ...prevState, [name]: value }));
-  };
-
-  const handleFeePeriodChange = (period) => {
-    feePeriod !== period && setFeePeriod(period);
-    "month" === period ? setTotalFees(50) : setTotalFees(550);
-  };
-
-  const handleStateSelect = (e, selectInfo) => {
-    console.log(selectInfo);
-    console.log(e.target);
-    console.log(e.target.value);
-  };
-
-  const buildStatesDropdown = () => {
-    const stateOptions = states.map((stateInfo) => {
-      return (
-        <option value={stateInfo.abbreviation} key={stateInfo.abbreviation}>
-          {stateInfo.name}
-        </option>
-      );
-    });
-    return (
-      <select value={clubFees.state} onChange={handleChange} name="state">
-        {stateOptions}
-      </select>
-    );
+    setDonations((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -72,7 +43,8 @@ const ProfileClubDonations = ({ user }) => {
     try {
       setLoading(true);
       setError("");
-      alert("stripe payment");
+      alert("Donation information saved");
+      Router.push("/profile-club-details");
     } catch (error) {
       catchErrors(error, setError);
     } finally {
@@ -80,125 +52,60 @@ const ProfileClubDonations = ({ user }) => {
     }
   };
 
-  const currency = (n, digits = 2) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: digits,
-    }).format(n);
-  };
-
   return (
-    <Container className="club-fees-container">
+    <Container className="club-donations-container">
       <div>
-        <h1>How would you like to pay?</h1>
+        <h1>Where will we send your donations?</h1>
       </div>
       <div className="club-fees-form-container">
         <Form error={Boolean(error)} loading={loading} onSubmit={handleSubmit}>
           <Message error header="Oops!" content={error} />
-          <div className="fee-checks">
-            <div className="period-check">
-              <label htmlFor="pay-monthly-check">Pay Monthly: $50/month</label>
-              <input
-                type="checkbox"
-                id="pay-monthly-check"
-                checked={"month" === feePeriod}
-                onChange={() => handleFeePeriodChange("month")}
-              />
-            </div>
-            <div className="period-check">
-              <label htmlFor="pay-yearly-check">Pay Yearly: $550/year</label>
-              <input
-                type="checkbox"
-                id="pay-yearly-check"
-                checked={"month" !== feePeriod}
-                onChange={() => handleFeePeriodChange("year")}
-              />
-            </div>
-          </div>
-          <section className="fee-fields">
-            <div className="left-div">
-              <h4>Billing Address</h4>
-              <Segment>
+          <Segment>
+            <section className="fee-fields">
+              <div className="left-div">
+                <h4>Account Details</h4>
                 <Form.Input
                   fluid
-                  label="Address Line 1"
-                  name="address1"
+                  label="Account Name"
+                  name="accountName"
                   type="text"
-                  value={clubFees.address1}
+                  value={donations.accountName}
                   onChange={handleChange}
                 />
                 <Form.Input
                   fluid
-                  label="Address Line 2"
-                  name="address2"
+                  label="IBAN"
+                  name="bankIBAN"
                   type="text"
-                  value={clubFees.address2}
+                  value={donations.bankIBAN}
                   onChange={handleChange}
                 />
-                <Form.Group widths="equal">
-                  <Form.Input
-                    fluid
-                    label="City"
-                    name="city"
-                    type="text"
-                    value={clubFees.city}
-                    onChange={handleChange}
-                  />
-                  {buildStatesDropdown()}
-                </Form.Group>
                 <Form.Input
                   fluid
-                  label="ZIP Code"
-                  name="zipcode"
+                  label="BIC"
+                  name="bankBIC"
                   type="text"
-                  value={clubFees.address2}
+                  value={donations.bankBIC}
                   onChange={handleChange}
                 />
-              </Segment>
-            </div>
-            <div className="right-div">
-              <h4>Order items</h4>
-              <Segment>
+              </div>
+              <div className="right-div" style={{ marginLeft: "48px" }}>
                 <div className="member-container">
                   <div>
-                    <Image src="/images/mo_bag.png" width={127} height={137} />
-                  </div>
-                  <div>
-                    <h5>Moshoppa Membership</h5>
-                    <div style={{ textAlign: "right" }}>
-                      <span>{currency(totalFees, 0)}</span>
-                      <br />
-                      <p>Charged Monthly</p>
-                    </div>
+                    <Image src="/images/mo_bag.png" width={250} height={270} />
                   </div>
                 </div>
-                <hr />
-                <br />
-                <div className="club-fees-totals">
-                  <h4>Sub-Total</h4>
-                  <span id="sub-total">{currency(totalFees)}</span>
-                </div>
-                <div className="club-fees-totals">
-                  <h4>Shipping</h4>
-                  <span id="sub-total">$0.00</span>
-                </div>
-                <div className="club-fees-totals">
-                  <h4>Total</h4>
-                  <span id="sub-total">{currency(totalFees)}</span>
-                </div>
-                <hr />
                 <div style={{ textAlign: "right" }}>
                   <Button
                     type="submit"
-                    content="Pay Now"
+                    content="Confirm"
                     color="blue"
                     disabled={false && (disabled || loading)}
                   />
                 </div>
-              </Segment>
-            </div>
-          </section>
+              </div>
+            </section>
+          </Segment>
         </Form>
       </div>
     </Container>
