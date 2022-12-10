@@ -46,6 +46,7 @@ const ProfileClubDetails = ({ user }) => {
       setLoading(true);
       setError("");
       alert("Donation information saved");
+      Router.push("/club-dashboard");
     } catch (error) {
       catchErrors(error, setError);
     } finally {

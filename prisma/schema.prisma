@@ -48,6 +48,7 @@ model Club {
   billZip      String?
   bankIBAN     String?
   bankBIC      String?
+  paid         Boolean  @default(false)
   user         User     @relation(fields: [userId], references: [id])
   userId       String   @unique
   parents      Parent[]

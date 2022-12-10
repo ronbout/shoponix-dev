@@ -72,7 +72,7 @@ export default async (req, res) => {
     //   products: cart.products,
     // }).save();
 
-    await prisma.cartProducts.delete({
+    await prisma.cartProducts.deleteMany({
       where: {
         cartId: cart.id,
       },

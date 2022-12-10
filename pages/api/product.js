@@ -129,12 +129,12 @@ const handleDeleteRequest = async (req, res) => {
         id: id,
       },
     });
-    await prisma.orderProducts.delete({
+    await prisma.orderProducts.deleteMany({
       where: {
         productId: id,
       },
     });
-    await prisma.cartProducts.delete({
+    await prisma.cartProducts.deleteMany({
       where: {
         productId: id,
       },

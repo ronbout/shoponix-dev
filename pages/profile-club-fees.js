@@ -25,6 +25,7 @@ const ProfileClubFees = ({ user }) => {
     city: "",
     state: "",
     zipcode: "",
+    paid: true,
   });
   const [feePeriod, setFeePeriod] = useState("month");
   const [disabled, setDisabled] = useState(true);
