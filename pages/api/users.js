@@ -14,6 +14,10 @@ export default async (req, res) => {
           id: userId,
         },
       },
+      include: {
+        club: true,
+        parent: true,
+      },
       orderBy: {
         role: "asc",
       },

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { handleLogout } from "../../utils/auth";
 
 const MoHeader = ({ user }) => {
-  console.log("header user: ", user);
+  // console.log("header user: ", user);
   return (
     <header className="mo-header">
       <nav>

@@ -24,7 +24,7 @@ export default async (req, res) => {
 const handleGetRequest = async (req, res) => {
   try {
     const { id } = req.query;
-    const club = await prisma.club.findUnique({
+    const clubInfo = await prisma.club.findUnique({
       where: {
         id,
       },
@@ -34,9 +34,9 @@ const handleGetRequest = async (req, res) => {
       },
     });
 
-    delete club.user.password;
+    delete clubInfo.user.password;
 
-    res.status(200).json({ club });
+    res.status(200).json({ clubInfo });
   } catch (error) {
     res.status(500).send("Error accessing Clubs: ", error);
   }
@@ -46,7 +46,7 @@ const handlePutRequest = async (req, res) => {
   try {
     const { id } = req.query;
     // const { id, name, price, description, productType, mediaUrl } = req.body;
-    const club = await prisma.club.update({
+    const clubInfo = await prisma.club.update({
       where: {
         id,
       },
@@ -59,9 +59,9 @@ const handlePutRequest = async (req, res) => {
       },
     });
 
-    delete club.user.password;
+    delete clubInfo.user.password;
 
-    res.status(203).json({ club });
+    res.status(203).json({ clubInfo });
   } catch (error) {
     res.status(500).send("Error updating Club: ", error);
   }

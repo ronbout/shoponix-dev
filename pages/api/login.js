@@ -5,16 +5,31 @@ import prisma from "../../lib/prisma";
 export default async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        club: true,
+        parent: true,
+      },
+    });
     if (!user) {
       return res.status(404).send("User does not exists");
     }
 
     const passwordsMatch = await bcrypt.compare(password, user.password);
     if (passwordsMatch) {
-      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "7d",
-      });
+      const token = jwt.sign(
+        {
+          userId: user.id,
+          userRole: user.role,
+          ...(user.club?.id && { clubId: user.club.id }),
+          ...(user.parent?.id && { parentId: user.parent.id }),
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "7d",
+        }
+      );
       const body = JSON.stringify({
         token,
         role: user.role,

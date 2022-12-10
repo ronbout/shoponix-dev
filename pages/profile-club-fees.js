@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import jwt from "jsonwebtoken";
 import Router, { useRouter } from "next/router";
 import Image from "next/image";
 import axios from "axios";
+import { parseCookies } from "nookies";
 import {
   Button,
   Dropdown,
@@ -17,21 +19,30 @@ import baseUrl from "../utils/baseUrl";
 import currency from "../utils/currency";
 import states from "../utils/states.json";
 
-const ProfileClubFees = ({ user }) => {
+const ProfileClubFees = ({ user, clubInfo }) => {
   const router = useRouter();
   const [clubFees, setClubFees] = useState({
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    zipcode: "",
+    billAddress: clubInfo.billAddress,
+    billAddress2: clubInfo.billAddress2,
+    billCity: clubInfo.billCity,
+    billState: clubInfo.billState,
+    billZip: clubInfo.billZip,
     paid: true,
   });
-  const [feePeriod, setFeePeriod] = useState("month");
+
+  const getTotalFees = () => {
+    return "monthly" === feePeriod ? 50 : 550;
+  };
+  const [feePeriod, setFeePeriod] = useState(clubInfo.feePeriod);
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [totalFees, setTotalFees] = useState(50);
+  const [totalFees, setTotalFees] = useState(getTotalFees());
+
+  const clubId = user.club.id;
+  const clubName = user.club.clubname;
+
+  console.log("clubInfo: ", clubInfo);
 
   useEffect(() => {
     const isClubFees = Object.values(clubFees).every((el) => Boolean(el));
@@ -45,7 +56,7 @@ const ProfileClubFees = ({ user }) => {
 
   const handleFeePeriodChange = (period) => {
     feePeriod !== period && setFeePeriod(period);
-    "month" === period ? setTotalFees(50) : setTotalFees(550);
+    "monthly" === period ? setTotalFees(50) : setTotalFees(550);
   };
 
   const handleStateSelect = (e, selectInfo) => {
@@ -63,7 +74,11 @@ const ProfileClubFees = ({ user }) => {
       );
     });
     return (
-      <select value={clubFees.state} onChange={handleChange} name="state">
+      <select
+        value={clubFees.billState}
+        onChange={handleChange}
+        name="billState"
+      >
         {stateOptions}
       </select>
     );
@@ -74,6 +89,13 @@ const ProfileClubFees = ({ user }) => {
     try {
       setLoading(true);
       setError("");
+
+      const url = `${baseUrl}/api/club/${clubId}`;
+      const payload = { feePeriod, ...clubFees };
+      const response = await axios.put(url, payload);
+
+      console.log(response.data);
+
       alert("stripe payment");
       Router.push("/profile-club-donations");
     } catch (error) {
@@ -97,8 +119,8 @@ const ProfileClubFees = ({ user }) => {
               <input
                 type="checkbox"
                 id="pay-monthly-check"
-                checked={"month" === feePeriod}
-                onChange={() => handleFeePeriodChange("month")}
+                checked={"monthly" === feePeriod}
+                onChange={() => handleFeePeriodChange("monthly")}
               />
             </div>
             <div className="period-check">
@@ -106,8 +128,8 @@ const ProfileClubFees = ({ user }) => {
               <input
                 type="checkbox"
                 id="pay-yearly-check"
-                checked={"month" !== feePeriod}
-                onChange={() => handleFeePeriodChange("year")}
+                checked={"monthly" !== feePeriod}
+                onChange={() => handleFeePeriodChange("annual")}
               />
             </div>
           </div>
@@ -118,26 +140,26 @@ const ProfileClubFees = ({ user }) => {
                 <Form.Input
                   fluid
                   label="Address Line 1"
-                  name="address1"
+                  name="billAddress"
                   type="text"
-                  value={clubFees.address1}
+                  value={clubFees.billAddress}
                   onChange={handleChange}
                 />
                 <Form.Input
                   fluid
                   label="Address Line 2"
-                  name="address2"
+                  name="billAddress2"
                   type="text"
-                  value={clubFees.address2}
+                  value={clubFees.billAddress2}
                   onChange={handleChange}
                 />
                 <Form.Group widths="equal">
                   <Form.Input
                     fluid
                     label="City"
-                    name="city"
+                    name="billCity"
                     type="text"
-                    value={clubFees.city}
+                    value={clubFees.billCity}
                     onChange={handleChange}
                   />
                   {buildStatesDropdown()}
@@ -145,9 +167,9 @@ const ProfileClubFees = ({ user }) => {
                 <Form.Input
                   fluid
                   label="ZIP Code"
-                  name="zipcode"
+                  name="billZip"
                   type="text"
-                  value={clubFees.address2}
+                  value={clubFees.billZip}
                   onChange={handleChange}
                 />
               </Segment>
@@ -198,6 +220,23 @@ const ProfileClubFees = ({ user }) => {
       </div>
     </Container>
   );
+};
+
+ProfileClubFees.getInitialProps = async (ctx) => {
+  const { token } = parseCookies(ctx);
+  const tokenInfo = jwt.verify(token, process.env.JWT_SECRET);
+  /***
+   *
+   *  TODO:  	if no club id redirect somewhere
+   *
+   */
+  // // fetch data on server
+  const url = `${baseUrl}/api/club/${tokenInfo.clubId}`;
+  const response = await axios.get(url);
+  // console.log("response: ", response.data);
+  // return response data as an object
+  return response.data;
+  // note: this object will be merge with existing props
 };
 
 export default ProfileClubFees;
