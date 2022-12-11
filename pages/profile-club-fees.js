@@ -22,11 +22,11 @@ import states from "../utils/states.json";
 const ProfileClubFees = ({ user, clubInfo }) => {
   const router = useRouter();
   const [clubFees, setClubFees] = useState({
-    billAddress: clubInfo.billAddress,
-    billAddress2: clubInfo.billAddress2,
-    billCity: clubInfo.billCity,
-    billState: clubInfo.billState,
-    billZip: clubInfo.billZip,
+    billAddress: clubInfo.billAddress ? clubInfo.billAddress : "",
+    billAddress2: clubInfo.billAddress2 ? clubInfo.billAddress2 : "",
+    billCity: clubInfo.billCity ? clubInfo.billCity : "",
+    billState: clubInfo.billState ? clubInfo.billState : "",
+    billZip: clubInfo.billZip ? clubInfo.billZip : "",
     paid: true,
   });
 

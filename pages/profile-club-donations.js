@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import jwt from "jsonwebtoken";
 import Router, { useRouter } from "next/router";
 import Image from "next/image";
 import axios from "axios";
+import { parseCookies } from "nookies";
 import {
   Button,
   Dropdown,
@@ -14,19 +16,20 @@ import {
 } from "semantic-ui-react";
 import catchErrors from "../utils/catchErrors";
 import baseUrl from "../utils/baseUrl";
-import currency from "../utils/currency";
-import states from "../utils/states.json";
 
-const ProfileClubDonations = ({ user }) => {
+const ProfileClubDonations = ({ user, clubInfo }) => {
   const router = useRouter();
   const [donations, setDonations] = useState({
-    accountName: "",
-    bankIBAN: "",
-    bankBIC: "",
+    bankAccountName: clubInfo.bankAccountName ? clubInfo.bankAccountName : "",
+    bankIBAN: clubInfo.bankIBAN ? clubInfo.bankIBAN : "",
+    bankBIC: clubInfo.bankBIC ? clubInfo.bankBIC : "",
   });
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const clubId = user.club.id;
+  const clubName = user.club.clubname;
 
   useEffect(() => {
     const isdonations = Object.values(donations).every((el) => Boolean(el));
@@ -43,7 +46,12 @@ const ProfileClubDonations = ({ user }) => {
     try {
       setLoading(true);
       setError("");
-      alert("Donation information saved");
+
+      const url = `${baseUrl}/api/club/${clubId}`;
+      const payload = { ...donations };
+      const response = await axios.put(url, payload);
+
+      console.log(response.data);
       Router.push("/profile-club-details");
     } catch (error) {
       catchErrors(error, setError);
@@ -67,9 +75,9 @@ const ProfileClubDonations = ({ user }) => {
                 <Form.Input
                   fluid
                   label="Account Name"
-                  name="accountName"
+                  name="bankAccountName"
                   type="text"
-                  value={donations.accountName}
+                  value={donations.bankAccountName}
                   onChange={handleChange}
                 />
                 <Form.Input
@@ -110,6 +118,23 @@ const ProfileClubDonations = ({ user }) => {
       </div>
     </Container>
   );
+};
+
+ProfileClubDonations.getInitialProps = async (ctx) => {
+  const { token } = parseCookies(ctx);
+  const tokenInfo = jwt.verify(token, process.env.JWT_SECRET);
+  /***
+   *
+   *  TODO:  	if no club id redirect somewhere
+   *
+   */
+  // // fetch data on server
+  const url = `${baseUrl}/api/club/${tokenInfo.clubId}`;
+  const response = await axios.get(url);
+  // console.log("response: ", response.data);
+  // return response data as an object
+  return response.data;
+  // note: this object will be merge with existing props
 };
 
 export default ProfileClubDonations;

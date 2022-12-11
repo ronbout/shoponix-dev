@@ -17,7 +17,7 @@ import {
 import catchErrors from "../utils/catchErrors";
 import baseUrl from "../utils/baseUrl";
 
-const ProfileClubDetails = ({ user, clubInfo }) => {
+const ProfileParentClub = ({ user, clubInfo }) => {
   const router = useRouter();
   const [clubDetails, setClubDetails] = useState({
     clubPass: clubInfo.clubPass ? clubInfo.clubPass : "",
@@ -151,16 +151,16 @@ const ProfileClubDetails = ({ user, clubInfo }) => {
   );
 };
 
-ProfileClubDetails.getInitialProps = async (ctx) => {
+ProfileParentClub.getInitialProps = async (ctx) => {
   const { token } = parseCookies(ctx);
   const tokenInfo = jwt.verify(token, process.env.JWT_SECRET);
   /***
    *
-   *  TODO:  	if no club id redirect somewhere
+   *  TODO:  	if no parent id redirect somewhere
    *
    */
   // // fetch data on server
-  const url = `${baseUrl}/api/club/${tokenInfo.clubId}`;
+  const url = `${baseUrl}/api/parent/${tokenInfo.parentId}`;
   const response = await axios.get(url);
   // console.log("response: ", response.data);
   // return response data as an object
@@ -168,4 +168,4 @@ ProfileClubDetails.getInitialProps = async (ctx) => {
   // note: this object will be merge with existing props
 };
 
-export default ProfileClubDetails;
+export default ProfileParentClub;

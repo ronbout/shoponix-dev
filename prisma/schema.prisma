@@ -39,20 +39,25 @@ enum Role {
 }
 
 model Club {
-  id           String        @id @default(uuid())
-  clubname     String
-  billAddress  String?
-  billAddress2 String?
-  billCity     String?
-  billState    String?
-  billZip      String?
-  bankIBAN     String?
-  bankBIC      String?
-  paid         Boolean       @default(false)
-  feePeriod    ClubFeePeriod @default(monthly)
-  user         User          @relation(fields: [userId], references: [id])
-  userId       String        @unique
-  parents      Parent[]
+  id              String        @id @default(uuid())
+  clubname        String
+  billAddress     String?
+  billAddress2    String?
+  billCity        String?
+  billState       String?
+  billZip         String?
+  bankAccountName String?
+  bankIBAN        String?
+  bankBIC         String?
+  clubPass        String?
+  clubSize        String?
+  clubSeasonDates String?
+  clubGoalDates   String?
+  paid            Boolean       @default(false)
+  feePeriod       ClubFeePeriod @default(monthly)
+  user            User          @relation(fields: [userId], references: [id])
+  userId          String        @unique
+  parents         Parent[]
 }
 
 enum ClubFeePeriod {
