@@ -12,7 +12,7 @@ export default async (req, res) => {
       await handlePutRequest(req, res);
       break;
     // case "DELETE":
-    // do not currently allow deleting of clubs
+    // do NOT  allow deleting of parents as orders would be lost
     // await handleDeleteRequest(req, res);
     // break;
     default:
@@ -24,29 +24,30 @@ export default async (req, res) => {
 const handleGetRequest = async (req, res) => {
   try {
     const { id } = req.query;
-    const clubInfo = await prisma.club.findUnique({
+    const parentInfo = await prisma.parent.findUnique({
       where: {
         id,
       },
       include: {
         user: true,
-        parents: true,
+        club: true,
+        cart: true,
+        order: true,
       },
     });
 
-    delete clubInfo.user.password;
+    delete parentInfo.user.password;
 
-    res.status(200).json({ clubInfo });
+    res.status(200).json({ parentInfo });
   } catch (error) {
-    res.status(500).send("Error accessing Clubs: ", error);
+    res.status(500).send("Error accessing Parents: ", error);
   }
 };
 
 const handlePutRequest = async (req, res) => {
   try {
     const { id } = req.query;
-    // const { id, name, price, description, productType, mediaUrl } = req.body;
-    const clubInfo = await prisma.club.update({
+    const parentInfo = await prisma.parent.update({
       where: {
         id,
       },
@@ -55,28 +56,30 @@ const handlePutRequest = async (req, res) => {
       },
       include: {
         user: true,
-        parents: true,
+        club: true,
+        cart: true,
+        order: true,
       },
     });
 
-    delete clubInfo.user.password;
+    delete parentInfo.user.password;
 
-    res.status(203).json({ clubInfo });
+    res.status(203).json({ parentInfo });
   } catch (error) {
-    res.status(500).send("Error updating Club: ", error);
+    res.status(500).send("Error updating Parent: ", error);
   }
 };
 
 const handleDeleteRequest = async (req, res) => {
   const { id } = req.query;
   try {
-    const club = await prisma.club.findUnique({
+    const parent = await prisma.parent.findUnique({
       where: {
         id,
       },
     });
-    const userId = club.userId;
-    await prisma.club.delete({
+    const userId = parent.userId;
+    await prisma.parent.delete({
       where: {
         id: id,
       },
@@ -86,14 +89,19 @@ const handleDeleteRequest = async (req, res) => {
         id: userId,
       },
     });
-    await prisma.parent.deleteMany({
-      where: {
-        clubId: id,
-      },
-    });
+    /**
+     * TODO: not currently deleting parents
+     * would lose order info
+     *
+     */
+    // await prisma.parents.deleteMany({
+    //   where: {
+    //     parentId: id,
+    //   },
+    // });
     res.status(204).json({ success: true });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error deleting Club and related info: ", error);
+    res.status(500).send("Error deleting Parent and related info: ", error);
   }
 };

@@ -20,6 +20,7 @@ import currency from "../utils/currency";
 import states from "../utils/states.json";
 
 const ProfileClubFees = ({ user, clubInfo }) => {
+  console.log("clubInfo: ", clubInfo);
   const router = useRouter();
   const [clubFees, setClubFees] = useState({
     billAddress: clubInfo.billAddress ? clubInfo.billAddress : "",

@@ -17,30 +17,71 @@ import {
 import catchErrors from "../utils/catchErrors";
 import baseUrl from "../utils/baseUrl";
 
-const ProfileParentClub = ({ user, clubInfo }) => {
+const ProfileParentClub = ({ user, parentInfo, clubs }) => {
   const router = useRouter();
-  const [clubDetails, setClubDetails] = useState({
-    clubPass: clubInfo.clubPass ? clubInfo.clubPass : "",
-    clubname: clubInfo.clubname ? clubInfo.clubname : "",
-    clubSize: clubInfo.clubSize ? clubInfo.clubSize : "",
-    clubSeasonDates: clubInfo.clubSeasonDates ? clubInfo.clubSeasonDates : "",
-    clubGoalDates: clubInfo.clubGoalDates ? clubInfo.clubGoalDates : "",
+  const [parentClub, setParentClub] = useState({
+    clubPass: "",
+    clubId: parentInfo.clubId ? parentInfo.clubId : "",
   });
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const clubId = user.club.id;
-  const clubname = user.club.clubname;
+  console.log("clubs: ", clubs);
+
+  const parentId = user.parent.id;
+  const parentFirstName = user.parent.firstname;
+  const parentLastName = user.parent.lastname;
 
   useEffect(() => {
-    const isclubDetails = Object.values(clubDetails).every((el) => Boolean(el));
-    isclubDetails ? setDisabled(false) : setDisabled(true);
-  }, [clubDetails]);
+    const isParentClub = Object.values(parentClub).every((el) => Boolean(el));
+    isParentClub ? setDisabled(false) : setDisabled(true);
+  }, [parentClub]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setClubDetails((prevState) => ({ ...prevState, [name]: value }));
+    if ("clubPass" === name) {
+      const matchClub = clubs.find((club) => {
+        return club.clubPass === value;
+      });
+      if (matchClub) {
+        setParentClub((prevState) => ({
+          clubPass: value,
+          clubId: matchClub.id,
+        }));
+        return;
+      }
+    }
+    setParentClub((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const buildClubsDropdown = (cPass) => {
+    let selectClubs = clubs;
+    if (cPass) {
+      const matchClub = clubs.find((club) => {
+        return club.clubPass === cPass;
+      });
+      if (matchClub) {
+        selectClubs = [matchClub];
+      }
+    }
+    const clubOptions = selectClubs.map((clubInfo) => {
+      return (
+        <option value={clubInfo.id} key={clubInfo.id}>
+          {clubInfo.clubname}
+        </option>
+      );
+    });
+    return (
+      <select
+        value={parentClub.clubId}
+        onChange={handleChange}
+        name="clubId"
+        id="club-selection"
+      >
+        {clubOptions}
+      </select>
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -49,12 +90,12 @@ const ProfileParentClub = ({ user, clubInfo }) => {
       setLoading(true);
       setError("");
 
-      const url = `${baseUrl}/api/club/${clubId}`;
-      const payload = { ...clubDetails };
+      const url = `${baseUrl}/api/parent/${parentId}`;
+      const payload = { clubId: parentClub.clubId };
       const response = await axios.put(url, payload);
 
       console.log(response.data);
-      Router.push("/club-dashboard");
+      Router.push("/profile-parent-details");
     } catch (error) {
       catchErrors(error, setError);
     } finally {
@@ -77,65 +118,19 @@ const ProfileParentClub = ({ user, clubInfo }) => {
                     label="Club Pass"
                     name="clubPass"
                     type="text"
-                    value={clubDetails.clubpass}
+                    placeholder="SHOULD THIS BE USED TO SELECT CLUB BELOW??"
+                    value={parentClub.clubPass}
                     onChange={handleChange}
                   />
                   <Image src="/images/soccer_com.png" width={185} height={16} />
-                  <div style={{ marginTop: "142px" }}>
-                    <h2>Enter your club details</h2>
-                    <p style={{ fontWeight: "400" }}>
-                      Club isn't recognized on Soccer.com? Not a problem.
-                      Moshoppa is here for everyone!
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <Image
-                    src="/images/standing_guy.png"
-                    width={162}
-                    height={354}
-                  />
                 </div>
               </div>
-            </section>
-            <section className="soccer-details-container">
-              <Form.Group widths="equal">
-                <Form.Input
-                  fluid
-                  label="Club Name"
-                  name="clubname"
-                  type="text"
-                  value={clubDetails.clubname}
-                  onChange={handleChange}
-                />
-                <Form.Input
-                  fluid
-                  label="Club Size"
-                  name="clubSize"
-                  type="text"
-                  value={clubDetails.clubSize}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-              <Form.Group widths="equal">
-                <Form.Input
-                  fluid
-                  label="Club Season Dates"
-                  name="clubSeasonDates"
-                  type="text"
-                  value={clubDetails.clubSeasonDates}
-                  onChange={handleChange}
-                />
-                <Form.Input
-                  fluid
-                  label="Fundraising Goal Dates"
-                  name="clubGoalDates"
-                  type="text"
-                  value={clubDetails.clubGoalDates}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-              <div style={{ textAlign: "right" }}>
+              <div style={{ textAlign: "left", marginTop: "36px" }}>
+                <h2>Club Information</h2>
+                <label htmlFor="club-selection">Club Name</label>
+                {buildClubsDropdown(parentClub.clubPass)}
+              </div>
+              <div style={{ textAlign: "right", marginTop: "24px" }}>
                 <Button
                   type="submit"
                   content="Update"
@@ -160,11 +155,15 @@ ProfileParentClub.getInitialProps = async (ctx) => {
    *
    */
   // // fetch data on server
-  const url = `${baseUrl}/api/parent/${tokenInfo.parentId}`;
-  const response = await axios.get(url);
-  // console.log("response: ", response.data);
+  const parentUrl = `${baseUrl}/api/parent/${tokenInfo.parentId}`;
+  const parentResponse = await axios.get(parentUrl);
+
+  const clubsUrl = `${baseUrl}/api/club`;
+  const clubsResponse = await axios.get(clubsUrl);
+
   // return response data as an object
-  return response.data;
+  // return { ...parentResponse.data, ...clubsResponse.data };
+  return { ...parentResponse.data, ...clubsResponse.data };
   // note: this object will be merge with existing props
 };
 

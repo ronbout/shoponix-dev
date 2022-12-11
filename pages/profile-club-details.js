@@ -77,7 +77,7 @@ const ProfileClubDetails = ({ user, clubInfo }) => {
                     label="Club Pass"
                     name="clubPass"
                     type="text"
-                    value={clubDetails.clubpass}
+                    value={clubDetails.clubPass}
                     onChange={handleChange}
                   />
                   <Image src="/images/soccer_com.png" width={185} height={16} />

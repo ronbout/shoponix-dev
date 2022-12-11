@@ -22,41 +22,44 @@ export default async (req, res) => {
 
 const handleGetRequest = async (req, res) => {
   try {
-    let clubs = await prisma.club.findMany({
+    let parents = await prisma.parent.findMany({
       include: {
         user: true,
-        parents: true,
+        club: true,
+        cart: true,
+        order: true,
       },
     });
 
-    clubs = clubs.map((club) => {
-      delete club.user.password;
-      return club;
+    parents = parents.map((parent) => {
+      delete parent.user.password;
+      return parent;
     });
-    res.status(200).json({ clubs });
+    res.status(200).json({ parents });
   } catch (error) {
     // console.error(error)
-    res.status(500).send("Error accessing Clubs: ", error);
+    res.status(500).send("Error accessing Parents: ", error);
   }
 };
 
 const handlePostRequest = async (req, res) => {
-  const { userId, clubname } = req.body;
+  const { userId, firstname, lastname } = req.body;
   try {
-    if (!userId || !clubname) {
-      return res.status(422).send("Club missing one or more fields");
+    if (!userId || !firstname || !lastname) {
+      return res.status(422).send("Parent missing one or more fields");
     }
 
-    const club = await prisma.club.create({
+    const parentInfo = await prisma.parent.create({
       data: {
         userId,
-        clubname,
+        firstname,
+        lastname,
       },
     });
 
-    res.status(200).json(club);
+    res.status(200).json(parentInfo);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error creating club: ", error);
+    res.status(500).send("Error creating parent: ", error);
   }
 };

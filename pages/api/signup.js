@@ -97,9 +97,18 @@ export default async (req, res) => {
 
     // console.log(newUser);
 
-    const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    const token = jwt.sign(
+      {
+        userId: newUser.id,
+        userRole: newUser.role,
+        ...(newUser.club?.id && { clubId: newUser.club.id }),
+        ...(newUser.parent?.id && { parentId: newUser.parent.id }),
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
     res.status(201).json(token);
   } catch (error) {
     console.error(error);
