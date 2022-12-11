@@ -22,35 +22,40 @@ export default async (req, res) => {
 };
 
 const handleGetRequest = async (req, res) => {
-  const { id } = req.query;
-  const product = await prisma.product.update({
-    where: {
-      id,
-    },
-    data: {
-      viewCount: { increment: 1 },
-    },
-  });
-  // const product = await Product.findOneAndUpdate(
-  //   { id: id },
-  //   { $inc: { viewCount: 1 } }
-  // );
-  const { productType } = product;
-  const related = await prisma.product.findMany({
-    where: {
-      productType,
-    },
-    take: 4,
-    orderBy: {
-      viewCount: "desc",
-    },
-  });
-  // const related = await Product.find({
-  //   productType: productType,
-  // })
-  //   .sort({ viewCount: "desc" })
-  //   .limit(4);
-  res.status(200).json({ product, related });
+  try {
+    const { id } = req.query;
+    const product = await prisma.product.update({
+      where: {
+        id,
+      },
+      data: {
+        viewCount: { increment: 1 },
+        lastVisited: new Date(),
+      },
+    });
+    // const product = await Product.findOneAndUpdate(
+    //   { id: id },
+    //   { $inc: { viewCount: 1 } }
+    // );
+    const { productType } = product;
+    const related = await prisma.product.findMany({
+      where: {
+        productType,
+      },
+      take: 4,
+      orderBy: {
+        viewCount: "desc",
+      },
+    });
+    // const related = await Product.find({
+    //   productType: productType,
+    // })
+    //   .sort({ viewCount: "desc" })
+    //   .limit(4);
+    res.status(200).json({ product, related });
+  } catch (error) {
+    res.status(500).send("Error accessing product on the Server" + error);
+  }
 };
 
 const handlePostRequest = async (req, res) => {

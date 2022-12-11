@@ -104,7 +104,7 @@ const ProfileParentClub = ({ user, parentInfo, clubs }) => {
   };
 
   return (
-    <Container className="club-details-container">
+    <Container className="parent-club-container">
       <div>
         <Form error={Boolean(error)} loading={loading} onSubmit={handleSubmit}>
           <Message error header="Oops!" content={error} />

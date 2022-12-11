@@ -2,7 +2,7 @@ import prisma from "../../lib/prisma";
 
 export default async (req, res) => {
   try {
-    const { page, size, searchTerm } = req.query;
+    const { page = 1, size = 10, searchTerm = "" } = req.query;
     // console.log(searchTerm)
     // string to number
     const pageNum = Number(page);

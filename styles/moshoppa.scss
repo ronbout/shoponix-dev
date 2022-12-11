@@ -82,13 +82,19 @@ body {
 
 .club-fees-container,
 .club-donations-container,
-.club-details-container {
+.club-details-container,
+.parent-club-container,
+.parent-details-container {
   max-width: 1200px;
   margin: 0 auto 30px;
 
   h1 {
     text-align: center;
     margin-bottom: 64px;
+  }
+
+  label {
+    font-weight: 700;
   }
 
   .fee-fields {
@@ -145,7 +151,8 @@ body {
   }
 }
 
-.club-details-container {
+.club-details-container,
+.parent-club-container {
   .soccer-pass-container,
   .soccer-details-container {
     text-align: center;

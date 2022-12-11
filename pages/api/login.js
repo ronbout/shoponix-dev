@@ -5,8 +5,11 @@ import prisma from "../../lib/prisma";
 export default async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.update({
       where: { email },
+      data: {
+        lastActive: new Date(),
+      },
       include: {
         club: true,
         parent: true,

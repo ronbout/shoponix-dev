@@ -1,4 +1,5 @@
 import prisma from "../../../lib/prisma";
+import isEmail from "validator/lib/isEmail";
 
 export default async (req, res) => {
   switch (req.method) {
@@ -47,12 +48,56 @@ const handleGetRequest = async (req, res) => {
 const handlePutRequest = async (req, res) => {
   try {
     const { id } = req.query;
+    const body = req.body;
+    if (body.email) {
+      // we are here from the parent details page
+      // must update some user data
+      if (!isEmail(body.email)) {
+        return res.status(422).send("Email must be valid");
+      }
+      const user = await prisma.user.findUnique({
+        where: {
+          email: body.email,
+        },
+        include: {
+          parent: true,
+        },
+      });
+
+      if (user && user.parent?.id !== id) {
+        return res
+          .status(422)
+          .send(`Another User already exist with that email:  ${body.email}`);
+      }
+      const userBody = {
+        email: body.email,
+        ...(body.firstname && { firstname: body.firstname }),
+        ...(body.lastname && { lastname: body.lastname }),
+        ...(body.phone && { phone: body.phone }),
+      };
+
+      await prisma.user.updateMany({
+        where: {
+          parent: {
+            id,
+          },
+        },
+        data: {
+          ...userBody,
+        },
+      });
+    }
+    delete body.email;
+    delete body.firstname;
+    delete body.lastname;
+    delete body.phone;
+
     const parentInfo = await prisma.parent.update({
       where: {
         id,
       },
       data: {
-        ...req.body,
+        ...body,
       },
       include: {
         user: true,

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Container } from "semantic-ui-react";
+import { Container, Embed } from "semantic-ui-react";
 
 const ClubHome = (props) => {
   const router = useRouter();
@@ -8,8 +8,21 @@ const ClubHome = (props) => {
   };
 
   return (
-    <Container className="container">
-      <h1>{club.name} home page</h1>
+    <Container
+      className="container"
+      style={{ width: "800px", margin: "24px auto", textAlign: "center" }}
+    >
+      <div>
+        <h1>{club.name} Club Page</h1>
+        <Embed
+          id="3fSX8BFmeDw"
+          placeholder="/images/niall_vid.jpg"
+          source="youtube"
+        />
+      </div>
+      <section style={{ marginTop: "36px" }}>
+        <h2>Parent Wallet info</h2>
+      </section>
     </Container>
   );
 };
