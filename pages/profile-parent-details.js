@@ -135,6 +135,7 @@ const ProfileParentDetails = ({ user, parentInfo }) => {
                     <input
                       type="date"
                       name="birthday"
+                      id="birthday"
                       placeholder="Because you should get gifts too!"
                       value={parentDetails.birthday}
                       onChange={handleChange}
