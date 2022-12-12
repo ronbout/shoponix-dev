@@ -15,8 +15,10 @@ const ClubHome = (props) => {
       <div>
         <h1>{club.name} Club Page</h1>
         <Embed
-          id="3fSX8BFmeDw"
-          placeholder="/images/niall_vid.jpg"
+          // id="3fSX8BFmeDw"
+          id="l81u-oSIAp4"
+          // placeholder="/images/niall_vid.jpg"
+          placeholder="/images/zombie.jpg"
           source="youtube"
         />
       </div>
