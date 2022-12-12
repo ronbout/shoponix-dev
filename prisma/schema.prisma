@@ -11,10 +11,10 @@ datasource db {
 }
 
 model User {
-  id         String    @id @default(uuid())
+  id         String   @id @default(uuid())
   firstname  String
   lastname   String
-  email      String    @unique
+  email      String   @unique
   phone      String?
   address    String?
   address2   String?
@@ -22,11 +22,10 @@ model User {
   state      String?
   zip        String?
   password   String
-  role       Role      @default(parent)
-  product    Product[]
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  lastActive DateTime  @default(now())
+  role       Role     @default(parent)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  lastActive DateTime @default(now())
   store      Store[]
   club       Club?
   parent     Parent?
@@ -37,6 +36,7 @@ enum Role {
   club
   admin
   root
+  user
 }
 
 model Club {
@@ -89,30 +89,33 @@ enum ParentRole {
 }
 
 model Product {
-  id            String          @id @default(uuid())
-  name          String
-  price         Decimal
-  productType   String
-  sku           String?         @unique
-  description   String
-  mediaUrl      String
-  viewCount     Int?
-  user          User?           @relation(fields: [userId], references: [id])
-  userId        String?
-  store         Store?          @relation(fields: [storeId], references: [id])
-  storeId       String?
-  lastVisited   DateTime        @default(now())
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  orderProducts OrderProducts[]
-  cartProducts  CartProducts[]
+  id                String              @id @default(uuid())
+  name              String
+  price             Decimal
+  commission        Decimal?            @default(0.20)
+  productType       String?
+  sku               String              @unique
+  description       String?
+  sizeChoices       Json?
+  colorChoices      Json?
+  mediaUrl          String?
+  viewCount         Int?                @default(0)
+  store             Store?              @relation(fields: [storeId], references: [id])
+  storeId           String?
+  lastVisited       DateTime            @default(now())
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  orderProducts     OrderProducts[]
+  cartProducts      CartProducts[]
+  productCategories ProductCategories[]
+  productTags       ProductTags[]
 
   @@index([name])
 }
 
 model Store {
   id        String      @id @default(uuid())
-  name      String
+  name      String      @unique
   email     String
   web       String?
   aboutText String
@@ -175,4 +178,34 @@ model CartProducts {
 
   productId String
   cartId    String
+}
+
+model Category {
+  id                String              @id @default(uuid())
+  name              String              @unique
+  description       String?
+  productCategories ProductCategories[]
+}
+
+model ProductCategories {
+  id         String   @id @default(uuid())
+  Product    Product  @relation(fields: [productId], references: [id])
+  productId  String
+  Category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+}
+
+model Tag {
+  id          String        @id @default(uuid())
+  name        String        @unique
+  description String?
+  productTags ProductTags[]
+}
+
+model ProductTags {
+  id        String  @id @default(uuid())
+  Product   Product @relation(fields: [productId], references: [id])
+  productId String
+  Tag       Tag     @relation(fields: [tagId], references: [id])
+  tagId     String
 }

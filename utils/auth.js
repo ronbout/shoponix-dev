@@ -8,8 +8,12 @@ export const handleLogin = (token, userType, signup = false) => {
   }
   if ("club" === userType) {
     Router.push("/profile-club");
-  } else {
+  } else if ("parent" === userType) {
     Router.push("/profile-parent");
+  } else if ("user" === userType) {
+    Router.push("/profile");
+  } else {
+    Router.push("/admin/dashboard");
   }
 };
 

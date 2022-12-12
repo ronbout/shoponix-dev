@@ -80,16 +80,6 @@ const handlePostRequest = async (req, res) => {
         storeId,
       },
     });
-    // const product = await new Product({
-    //   name,
-    //   sku,
-    //   price,
-    //   description,
-    //   productType,
-    //   mediaUrl,
-    //   user: userId,
-    //   store: storeId,
-    // }).save();
 
     res.status(200).json(product);
   } catch (error) {
