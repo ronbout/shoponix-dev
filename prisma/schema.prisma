@@ -95,7 +95,7 @@ model Product {
   commission        Decimal?            @default(0.20)
   productType       String?
   sku               String              @unique
-  description       String?
+  description       String
   sizeChoices       Json?
   colorChoices      Json?
   mediaUrl          String?

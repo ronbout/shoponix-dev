@@ -59,10 +59,20 @@ const handleGetRequest = async (req, res) => {
 };
 
 const handlePostRequest = async (req, res) => {
-  const { name, price, description, productType, mediaUrl, userId, storeId } =
-    req.body;
+  const {
+    name,
+    price,
+    description = "",
+    mediaUrl = "",
+    storeId,
+    sku,
+    categoryIds = [],
+    tagIds = [],
+    colorChoices = [],
+    sizeChoices = [],
+  } = req.body;
   // console.log(req.body)
-  const sku = shortid.generate();
+  return res.status(422).json(req.body);
   try {
     if (!name || !price || !description || !sku || !mediaUrl) {
       return res.status(422).send("Product missing one or more fields");

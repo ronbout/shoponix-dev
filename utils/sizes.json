@@ -1,0 +1,26 @@
+[
+  {
+    "code": "XS",
+    "description": "Extra Small"
+  },
+  {
+    "code": "S",
+    "description": "Small"
+  },
+  {
+    "code": "M",
+    "description": "Medium"
+  },
+  {
+    "code": "L",
+    "description": "Large"
+  },
+  {
+    "code": "XL",
+    "description": "Extra Large"
+  },
+  {
+    "code": "XXL",
+    "description": "Extra X-Large"
+  }
+]

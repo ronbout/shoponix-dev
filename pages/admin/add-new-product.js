@@ -9,14 +9,18 @@ import {
   Button,
   Dropdown,
   Form,
+  Input,
   Icon,
   Message,
   Segment,
   Container,
 } from "semantic-ui-react";
+import Select from "react-select";
 import catchErrors from "../../utils/catchErrors";
 import baseUrl from "../../utils/baseUrl";
 import AdminSidebar from "../../components/_App/AdminSidebar";
+import colors from "../../utils/colors.json";
+import sizes from "../../utils/sizes.json";
 
 const AddNewProduct = ({ user, merchants, categories, tags }) => {
   const router = useRouter();
@@ -28,7 +32,14 @@ const AddNewProduct = ({ user, merchants, categories, tags }) => {
     price: productInfo.price ? productInfo.price : "",
     categoryIds: productInfo.categoryIds ? productInfo.categoryIds : [],
     tagIds: productInfo.tagIds ? productInfo.tagIds : [],
+    mediaUrl: productInfo.mediaUrl ? productInfo.mediaUrl : "",
+    colorChoices: productInfo.colorChoices ? productInfo.colorChoices : [],
+    sizeChoices: productInfo.sizeChoices ? productInfo.sizeChoices : [],
+    description: productInfo.description ? productInfo.description : "",
   });
+  const [mediaPreview, setMediaPreview] = useState(
+    "/images/product-image-placeholder.png"
+  );
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -45,79 +56,142 @@ const AddNewProduct = ({ user, merchants, categories, tags }) => {
     setProductDetails((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  const handleSelectChange = (val, name) => {
+    console.log(val);
+    console.log(name);
+    // const { name } = e.target;
+    // let values = Array.from(e.target.selectedOptions, (option) => option.value);
+    // console.log("values: ", values);
+    setProductDetails((prevState) => ({ ...prevState, [name]: val }));
+  };
+
   const buildMerchantsDropdown = () => {
     const merchantOptions = merchants.map((merchantInfo) => {
-      return (
-        <option value={merchantInfo.id} key={merchantInfo.id}>
-          {merchantInfo.name}
-        </option>
-      );
+      return { value: merchantInfo.id, label: merchantInfo.name };
     });
 
     return (
-      <select
+      <Select
         value={productDetails.storeId}
-        onChange={handleChange}
+        onChange={(val) => handleSelectChange(val, "storeId")}
         name="storeId"
-        id="merchant-selection"
+        instanceId="merchant-selection"
+        placeholder="Select Merchant"
         required={true}
-      >
-        <option value="" disabled>
-          Select Merchant
-        </option>
-        {merchantOptions}
-      </select>
+        isSearchable
+        options={merchantOptions}
+      ></Select>
     );
   };
 
   const buildCategoriesDropdown = () => {
     const categoryOptions = categories.map((categoryInfo) => {
-      return (
-        <option value={categoryInfo.id} key={categoryInfo.id}>
-          {categoryInfo.name}
-        </option>
-      );
+      return { value: categoryInfo.id, label: categoryInfo.name };
     });
 
     return (
-      <select
+      <Select
         value={productDetails.categoryIds}
-        onChange={handleChange}
+        onChange={(val) => handleSelectChange(val, "categoryIds")}
         name="categoryIds"
-        id="category-selection"
-        multiple={true}
-      >
-        <option value="" disabled>
-          Select Category(s)
-        </option>
-        {categoryOptions}
-      </select>
+        instanceId="category-selection"
+        placeholder="Select Categories"
+        isMulti
+        isSearchable
+        options={categoryOptions}
+      ></Select>
     );
   };
 
   const buildTagsDropdown = () => {
     const tagOptions = tags.map((tagInfo) => {
-      return (
-        <option value={tagInfo.id} key={tagInfo.id}>
-          {tagInfo.name}
-        </option>
-      );
+      return { value: tagInfo.id, label: tagInfo.name };
     });
 
     return (
-      <select
+      <Select
         value={productDetails.tagIds}
-        onChange={handleChange}
+        onChange={(val) => handleSelectChange(val, "tagIds")}
         name="tagIds"
-        id="tag-selection"
-        multiple={true}
-      >
-        <option value="" disabled>
-          Select Tag(s)
-        </option>
-        {tagOptions}
-      </select>
+        instanceId="tag-selection"
+        placeholder="Select Tags"
+        isMulti
+        options={tagOptions}
+      ></Select>
     );
+  };
+
+  const buildColorsDropdown = () => {
+    const colorOptions = colors.map((colorInfo) => {
+      return {
+        value: colorInfo.name,
+        label: colorInfo.name,
+        hex: colorInfo.hex,
+      };
+    });
+
+    const formatOptionLabel = ({ value, label, hex }) => {
+      return (
+        <div>
+          <span style={{ width: "120px", display: "inline-block" }}>
+            {label}
+          </span>
+          <span
+            style={{
+              marginLeft: "24px",
+              width: "100px",
+              height: "25px",
+              backgroundColor: hex,
+              display: "inline-block",
+            }}
+          >
+            &nbsp;
+          </span>
+        </div>
+      );
+    };
+
+    return (
+      <Select
+        value={productDetails.colorChoices}
+        onChange={(val) => handleSelectChange(val, "colorChoices")}
+        name="colorChoices"
+        instanceId="color-selection"
+        placeholder="Select Available Colors"
+        isMulti
+        options={colorOptions}
+        formatOptionLabel={formatOptionLabel}
+      ></Select>
+    );
+  };
+
+  const buildSizesDropdown = () => {
+    const sizeOptions = sizes.map((sizeInfo) => {
+      return {
+        value: sizeInfo.code,
+        label: sizeInfo.code,
+      };
+    });
+
+    return (
+      <Select
+        value={productDetails.sizeChoices}
+        onChange={(val) => handleSelectChange(val, "sizeChoices")}
+        name="sizeChoices"
+        instanceId="size-selection"
+        placeholder="Select Available Sizes"
+        isMulti
+        options={sizeOptions}
+      ></Select>
+    );
+  };
+
+  const handleImageUpload = (e) => {
+    const { files } = e.target;
+    setProductDetails((prevState) => ({ ...prevState, mediaUrl: files[0] }));
+    const imageUrl = window.URL.createObjectURL(files[0]);
+    console.log("imageUrl: ", imageUrl);
+    setMediaPreview(imageUrl);
   };
 
   const handleSubmit = async (e) => {
@@ -144,6 +218,7 @@ const AddNewProduct = ({ user, merchants, categories, tags }) => {
   return (
     <AdminSidebar user={user}>
       <Container className="product-entry-container">
+        <h3>Add Product</h3>
         <div>
           <Form
             error={Boolean(error)}
@@ -159,7 +234,7 @@ const AddNewProduct = ({ user, merchants, categories, tags }) => {
                       <label htmlFor="product-name">Product Name *</label>
                       <input
                         type="text"
-                        name="birthday"
+                        name="name"
                         id="product-name"
                         value={productDetails.name}
                         onChange={handleChange}
@@ -209,13 +284,68 @@ const AddNewProduct = ({ user, merchants, categories, tags }) => {
                     </div>
                   </div>
                 </div>
-                <div style={{ textAlign: "right", marginTop: "24px" }}>
-                  <Button
-                    type="submit"
-                    content="Update"
-                    color="blue"
-                    disabled={false && (disabled || loading)}
-                  />
+                <div style={{ display: "flex" }}>
+                  <div
+                    style={{
+                      width: "50%",
+                      height: "600px",
+                      paddingRight: "12px",
+                    }}
+                  >
+                    <Form.Field
+                      control={Input}
+                      name="mediaUrl"
+                      type="file"
+                      label="Product Image"
+                      accept="image/*"
+                      content="Select Image"
+                      onChange={handleImageUpload}
+                    />
+                    <Image
+                      id="product-image-display"
+                      src={mediaPreview}
+                      width={569}
+                      height={569}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      width: "50%",
+                      paddingRight: "12px",
+                      marginTop: "68px",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <div style={{ marginBottom: "24px" }}>
+                      <label htmlFor="color-selection">Colors Available</label>
+                      {buildColorsDropdown()}
+                    </div>
+                    <div style={{ marginBottom: "24px" }}>
+                      <label htmlFor="size-selection">Sizes Available</label>
+                      {buildSizesDropdown()}
+                    </div>
+                    <div style={{ marginBottom: "24px" }}>
+                      <label htmlFor="description">Product Description *</label>
+                      <input
+                        type="text"
+                        name="description"
+                        id="description"
+                        value={productDetails.description}
+                        required={true}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    <div style={{ textAlign: "right", marginTop: "24px" }}>
+                      <Button
+                        type="submit"
+                        content="Create"
+                        color="blue"
+                        disabled={false && (disabled || loading)}
+                      />
+                    </div>
+                  </div>
                 </div>
               </section>
             </Segment>
