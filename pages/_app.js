@@ -29,6 +29,7 @@ class MyApp extends App {
       const isProtectedRoute =
         ctx.pathname === "/profile" ||
         ctx.pathname === "/admin/add-product" ||
+        ctx.pathname === "/admin/add-new-product" ||
         ctx.pathname === "/my-orders-history" ||
         ctx.pathname === "/admin/users" ||
         ctx.pathname === "/admin/dashboard" ||
@@ -49,6 +50,7 @@ class MyApp extends App {
         const isNotPermitted =
           !(isRoot || isAdmin || hasStore) &&
           (ctx.pathname === "/admin/add-product" ||
+            ctx.pathname === "/admin/add-new-product" ||
             ctx.pathname === "/admin/customers" ||
             ctx.pathname === "/admin/orders" ||
             ctx.pathname === "/admin/dashboard");
