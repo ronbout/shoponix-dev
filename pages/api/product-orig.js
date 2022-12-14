@@ -32,27 +32,39 @@ const handleGetRequest = async (req, res) => {
         viewCount: { increment: 1 },
         lastVisited: new Date(),
       },
+      include: {
+        productCategories: {
+          include: {
+            category: true,
+          },
+        },
+        productTags: {
+          include: {
+            tag: true,
+          },
+        },
+      },
     });
     // const product = await Product.findOneAndUpdate(
     //   { id: id },
     //   { $inc: { viewCount: 1 } }
     // );
-    const { productType } = product;
-    const related = await prisma.product.findMany({
-      where: {
-        productType,
-      },
-      take: 4,
-      orderBy: {
-        viewCount: "desc",
-      },
-    });
+    // const { productType } = product;
+    // const related = await prisma.product.findMany({
+    //   where: {
+    //     productType,
+    //   },
+    //   take: 4,
+    //   orderBy: {
+    //     viewCount: "desc",
+    //   },
+    // });
     // const related = await Product.find({
     //   productType: productType,
     // })
     //   .sort({ viewCount: "desc" })
     //   .limit(4);
-    res.status(200).json({ product, related });
+    res.status(200).json({ product });
   } catch (error) {
     res.status(500).send("Error accessing product on the Server" + error);
   }
@@ -123,8 +135,16 @@ const handlePostRequest = async (req, res) => {
         id: productId,
       },
       include: {
-        productCategories: true,
-        productTags: true,
+        productCategories: {
+          include: {
+            category: true,
+          },
+        },
+        productTags: {
+          include: {
+            tag: true,
+          },
+        },
       },
     });
 
