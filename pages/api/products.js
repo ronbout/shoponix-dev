@@ -2,7 +2,7 @@ import prisma from "../../lib/prisma";
 
 export default async (req, res) => {
   try {
-    const { page = 1, size = 10, searchTerm = "" } = req.query;
+    const { page = 1, size = 100, searchTerm = "" } = req.query;
     // console.log(searchTerm)
     // string to number
     const pageNum = Number(page);
@@ -77,6 +77,18 @@ export default async (req, res) => {
       products = await prisma.product.findMany({
         orderBy: {
           viewCount: "desc",
+        },
+        include: {
+          productCategories: {
+            include: {
+              category: true,
+            },
+          },
+          productTags: {
+            include: {
+              tag: true,
+            },
+          },
         },
         skip: skips,
         take: pageSize,

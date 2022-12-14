@@ -22,6 +22,21 @@ import AdminSidebar from "../../components/_App/AdminSidebar";
 import colors from "../../utils/colors.json";
 import sizes from "../../utils/sizes.json";
 
+const INITIAL_PRODUCT = {
+  name: "",
+  storeId: "",
+  sku: "",
+  price: "",
+  categoryIds: [],
+  tagIds: [],
+  mediaUrl: "",
+  colorChoices: [],
+  sizeChoices: [],
+  description: "",
+};
+
+const INITIAL_IMAGE = "/images/product-image-placeholder.png";
+
 const AddNewProduct = ({ user, merchants, categories, tags }) => {
   const router = useRouter();
   const productInfo = {};
@@ -37,9 +52,8 @@ const AddNewProduct = ({ user, merchants, categories, tags }) => {
     sizeChoices: productInfo.sizeChoices ? productInfo.sizeChoices : [],
     description: productInfo.description ? productInfo.description : "",
   });
-  const [mediaPreview, setMediaPreview] = useState(
-    "/images/product-image-placeholder.png"
-  );
+  const [mediaPreview, setMediaPreview] = useState(INITIAL_IMAGE);
+  const [success, setSuccess] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -57,11 +71,6 @@ const AddNewProduct = ({ user, merchants, categories, tags }) => {
   };
 
   const handleSelectChange = (val, name) => {
-    console.log(val);
-    console.log(name);
-    // const { name } = e.target;
-    // let values = Array.from(e.target.selectedOptions, (option) => option.value);
-    // console.log("values: ", values);
     setProductDetails((prevState) => ({ ...prevState, [name]: val }));
   };
 
@@ -186,7 +195,7 @@ const AddNewProduct = ({ user, merchants, categories, tags }) => {
     );
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageChange = (e) => {
     const { files } = e.target;
     setProductDetails((prevState) => ({ ...prevState, mediaUrl: files[0] }));
     const imageUrl = window.URL.createObjectURL(files[0]);
@@ -194,20 +203,52 @@ const AddNewProduct = ({ user, merchants, categories, tags }) => {
     setMediaPreview(imageUrl);
   };
 
+  const handleImageUpload = async () => {
+    const data = new FormData();
+    data.append("file", productDetails.mediaUrl);
+    data.append(
+      "upload_preset",
+      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+    );
+    data.append("cloud_name", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME);
+    const response = await axios.post(
+      process.env.NEXT_PUBLIC_CLOUDINARY_URL,
+      data
+    );
+    const mediaUrl = response.data.url;
+    return mediaUrl;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
       setError("");
+      /****
+       *
+       * turn off cloudinary for testing...keep the usage down!
+       */
+      // const imageUrl = await handleImageUpload();
+      // console.log(imageUrl)
+      // const mediaUrl = imageUrl.replace(/^http:\/\//i, "https://");
+      const mediaUrl =
+        "https://res.cloudinary.com/dhrcafda6/image/upload/v1670786455/tj3hykmremiz5lewxzex.webp";
+      const payload = { ...productDetails };
+      payload.categoryIds = productDetails.categoryIds.map(
+        (cats) => cats.value
+      );
+      payload.tagIds = productDetails.tagIds.map((tags) => tags.value);
+      payload.storeId = productDetails.storeId.value;
+      payload.mediaUrl = mediaUrl;
+      console.log(payload);
+      const url = `${baseUrl}/api/product`;
+      const response = await axios.post(url, payload);
 
-      // const url = `${baseUrl}/api/parent/${parentId}`;
-      // const payload = { ...productDetails };
-      // const response = await axios.put(url, payload);
-
-      alert("save routine here");
-      // console.log(response.data);
-      // const clubname = response.data.parentInfo.club.clubname;
-      // Router.push(`/club/${clubname}`);
+      console.log(response.data);
+      setLoading(false);
+      setProductDetails(INITIAL_PRODUCT);
+      setMediaPreview(INITIAL_IMAGE);
+      setSuccess(true);
     } catch (error) {
       catchErrors(error, setError);
     } finally {
@@ -222,10 +263,18 @@ const AddNewProduct = ({ user, merchants, categories, tags }) => {
         <div>
           <Form
             error={Boolean(error)}
+            success={success}
             loading={loading}
             onSubmit={handleSubmit}
           >
             <Message error header="Oops!" content={error} />
+
+            <Message
+              success
+              icon="check"
+              header="Success!"
+              content="Your product has been submitted"
+            />
             <Segment>
               <section>
                 <div style={{ display: "flex", flexDirection: "column" }}>
@@ -299,7 +348,7 @@ const AddNewProduct = ({ user, merchants, categories, tags }) => {
                       label="Product Image"
                       accept="image/*"
                       content="Select Image"
-                      onChange={handleImageUpload}
+                      onChange={handleImageChange}
                     />
                     <Image
                       id="product-image-display"
