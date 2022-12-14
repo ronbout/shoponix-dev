@@ -65,7 +65,7 @@ const Login = () => {
             label="Email"
             placeholder="Email"
             name="email"
-            type="email"
+            type="text"
             value={user.email}
             onChange={handleChange}
           />

