@@ -6,9 +6,6 @@ export default async (req, res) => {
     case "GET":
       await handleGetRequest(req, res);
       break;
-    case "POST":
-      await handlePostRequest(req, res);
-      break;
     case "PUT":
       await handlePutRequest(req, res);
       break;

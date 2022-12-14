@@ -40,8 +40,8 @@ enum Role {
 }
 
 model Club {
-  id              String        @id @default(uuid())
-  clubname        String        @unique
+  id              String            @id @default(uuid())
+  clubname        String            @unique
   billAddress     String?
   billAddress2    String?
   billCity        String?
@@ -54,11 +54,12 @@ model Club {
   clubSize        String?
   clubSeasonDates String?
   clubGoalDates   String?
-  paid            Boolean       @default(false)
-  feePeriod       ClubFeePeriod @default(monthly)
-  user            User          @relation(fields: [userId], references: [id])
-  userId          String        @unique
+  paid            Boolean           @default(false)
+  feePeriod       ClubFeePeriod     @default(monthly)
+  user            User              @relation(fields: [userId], references: [id])
+  userId          String            @unique
   parents         Parent[]
+  donations       ParentDonations[]
 }
 
 enum ClubFeePeriod {
@@ -67,25 +68,51 @@ enum ClubFeePeriod {
 }
 
 model Parent {
-  id         String      @id @default(uuid())
-  firstname  String
-  lastname   String
-  relation   ParentRole?
-  birthday   String?
-  GPDRStatus String?
-  order      Order[]
-  cart       Cart[]
-  club       Club?       @relation(fields: [clubId], references: [id])
-  clubId     String?
+  id            String      @id @default(uuid())
+  firstname     String
+  lastname      String
+  soccerPass    String?
+  wallet        Decimal     @default(0)
+  walletSpent   Decimal     @default(0)
+  walletDonated Decimal     @default(0)
+  relation      ParentRole?
+  birthday      String?
+  GPDRStatus    String?
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @unique
+  order  Order[]
+  cart   Cart[]
+  club   Club?   @relation(fields: [clubId], references: [id])
+  clubId String?
+
+  user              User                @relation(fields: [userId], references: [id])
+  userId            String              @unique
+  parentDonations   ParentDonations[]
+  parentWalletSpend parentWalletSpend[]
 }
 
 enum ParentRole {
   Mom
   Dad
   Other
+}
+
+model ParentDonations {
+  id       String   @id @default(uuid())
+  date     DateTime
+  amount   Decimal
+  parent   Parent   @relation(fields: [parentId], references: [id])
+  Club     Club     @relation(fields: [clubId], references: [id])
+  clubId   String
+  parentId String
+}
+
+model parentWalletSpend {
+  id       String  @id @default(uuid())
+  amount   Decimal
+  order    Order   @relation(fields: [orderId], references: [id])
+  orderId  String  @unique
+  Parent   Parent  @relation(fields: [parentId], references: [id])
+  parentId String
 }
 
 model Product {
@@ -137,15 +164,16 @@ enum StoreStatus {
 }
 
 model Order {
-  id            String          @id @default(uuid())
-  email         String
-  total         Decimal
-  status        OrderStatus     @default(pending)
-  parent        Parent          @relation(fields: [parentId], references: [id])
-  parentId      String
-  orderProducts OrderProducts[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  id                String             @id @default(uuid())
+  email             String
+  total             Decimal
+  status            OrderStatus        @default(pending)
+  parent            Parent             @relation(fields: [parentId], references: [id])
+  parentId          String
+  orderProducts     OrderProducts[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  parentWalletSpend parentWalletSpend?
 }
 
 enum OrderStatus {

@@ -20,7 +20,7 @@ import baseUrl from "../utils/baseUrl";
 const ProfileParentClub = ({ user, parentInfo, clubs }) => {
   const router = useRouter();
   const [parentClub, setParentClub] = useState({
-    clubPass: "",
+    soccerPass: parentInfo.soccerPass ? parentInfo.soccerPass : "",
     clubId: parentInfo.clubId ? parentInfo.clubId : "",
   });
   const [disabled, setDisabled] = useState(true);
@@ -40,18 +40,6 @@ const ProfileParentClub = ({ user, parentInfo, clubs }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if ("clubPass" === name) {
-      const matchClub = clubs.find((club) => {
-        return club.clubPass === value;
-      });
-      if (matchClub) {
-        setParentClub((prevState) => ({
-          clubPass: value,
-          clubId: matchClub.id,
-        }));
-        return;
-      }
-    }
     setParentClub((prevState) => ({ ...prevState, [name]: value }));
   };
 
@@ -59,7 +47,7 @@ const ProfileParentClub = ({ user, parentInfo, clubs }) => {
     let selectClubs = clubs;
     if (cPass) {
       const matchClub = clubs.find((club) => {
-        return club.clubPass === cPass;
+        return club.soccerPass === cPass;
       });
       if (matchClub) {
         selectClubs = [matchClub];
@@ -91,7 +79,7 @@ const ProfileParentClub = ({ user, parentInfo, clubs }) => {
       setError("");
 
       const url = `${baseUrl}/api/parent/${parentId}`;
-      const payload = { clubId: parentClub.clubId };
+      const payload = { ...parentClub };
       const response = await axios.put(url, payload);
 
       console.log(response.data);
@@ -116,10 +104,9 @@ const ProfileParentClub = ({ user, parentInfo, clubs }) => {
                   <Form.Input
                     fluid
                     label="Club Pass"
-                    name="clubPass"
+                    name="soccerPass"
                     type="text"
-                    placeholder="SHOULD THIS BE USED TO SELECT CLUB BELOW??"
-                    value={parentClub.clubPass}
+                    value={parentClub.soccerPass}
                     onChange={handleChange}
                   />
                   <Image src="/images/soccer_com.png" width={185} height={16} />
@@ -128,7 +115,7 @@ const ProfileParentClub = ({ user, parentInfo, clubs }) => {
               <div style={{ textAlign: "left", marginTop: "36px" }}>
                 <h2>Club Information</h2>
                 <label htmlFor="club-selection">Club Name</label>
-                {buildClubsDropdown(parentClub.clubPass)}
+                {buildClubsDropdown(parentClub.soccerPass)}
               </div>
               <div style={{ textAlign: "right", marginTop: "24px" }}>
                 <Button
