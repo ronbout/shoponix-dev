@@ -119,6 +119,8 @@ model Product {
   id                String              @id @default(uuid())
   name              String
   price             Decimal
+  inStock           Boolean             @default(true)
+  currentlyListed   Boolean             @default(true)
   commission        Decimal?            @default(0.20)
   productType       String?
   sku               String              @unique
