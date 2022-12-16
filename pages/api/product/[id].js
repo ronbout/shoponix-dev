@@ -40,6 +40,7 @@ const handleGetRequest = async (req, res) => {
             tag: true,
           },
         },
+        store: true,
       },
     });
 

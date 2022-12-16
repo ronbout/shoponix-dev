@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { useTable, useSortBy, useGlobalFilter } from "react-table";
 import currency from "../../../utils/currency";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import CategoryFilter from "./CategoryFilter";
 import MerchantFilter from "./MerchantFilter";
 
@@ -31,6 +32,8 @@ function ProductTable({ productData, categories, merchants }) {
 
     return prodData;
   }, [productData, selectedCategoryId, selectedMerchantId]);
+
+  const router = useRouter();
 
   // const data = useMemo(() => productData, [productData]);
 
@@ -106,8 +109,34 @@ function ProductTable({ productData, categories, merchants }) {
     ],
     []
   );
+  const tableHooks = (hooks) => {
+    hooks.visibleColumns.push((columns) => [
+      ...columns,
+      {
+        id: "edit",
+        Header: "Edit",
+        Cell: ({ row }) => (
+          <button
+            className="btn btn-info"
+            type="button"
+            onClick={() => {
+              const prodId = row.original.id;
+              router.push(`/admin/product/edit/${prodId}`);
+            }}
+          >
+            Edit
+          </button>
+        ),
+      },
+    ]);
+  };
 
-  const tableInstance = useTable({ data, columns }, useGlobalFilter, useSortBy);
+  const tableInstance = useTable(
+    { data, columns },
+    useGlobalFilter,
+    useSortBy,
+    tableHooks
+  );
 
   const {
     getTableProps,

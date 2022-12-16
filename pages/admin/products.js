@@ -16,7 +16,7 @@ const AdminProductsList = ({ user, products, categories, merchants }) => {
     let categories = productInfo.productCategories
       .map((catInfo) => catInfo.category.name)
       .sort();
-    console.log(categories);
+    // console.log(categories);
     productInfo.categories = categories;
 
     let tags = productInfo.productTags
