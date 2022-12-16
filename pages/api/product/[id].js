@@ -6,9 +6,6 @@ export default async (req, res) => {
     case "GET":
       await handleGetRequest(req, res);
       break;
-    case "POST":
-      await handlePostRequest(req, res);
-      break;
     case "PUT":
       await handlePutRequest(req, res);
       break;
@@ -45,115 +42,10 @@ const handleGetRequest = async (req, res) => {
         },
       },
     });
-    // const product = await Product.findOneAndUpdate(
-    //   { id: id },
-    //   { $inc: { viewCount: 1 } }
-    // );
-    // const { productType } = product;
-    // const related = await prisma.product.findMany({
-    //   where: {
-    //     productType,
-    //   },
-    //   take: 4,
-    //   orderBy: {
-    //     viewCount: "desc",
-    //   },
-    // });
-    // const related = await Product.find({
-    //   productType: productType,
-    // })
-    //   .sort({ viewCount: "desc" })
-    //   .limit(4);
+
     res.status(200).json({ product });
   } catch (error) {
     res.status(500).send("Error accessing product on the Server" + error);
-  }
-};
-
-const handlePostRequest = async (req, res) => {
-  const {
-    name,
-    price,
-    description = "",
-    mediaUrl = "",
-    storeId,
-    sku,
-    categoryIds = [],
-    tagIds = [],
-    colorChoices = [],
-    sizeChoices = [],
-  } = req.body;
-  // console.log(req.body)
-  try {
-    if (!name || !price || !description || !sku || !mediaUrl) {
-      return res.status(422).send("Product missing one or more fields");
-    }
-
-    let product = await prisma.product.create({
-      data: {
-        name,
-        sku,
-        price,
-        description,
-        mediaUrl,
-        storeId,
-        colorChoices,
-        sizeChoices,
-      },
-    });
-
-    const productId = product.id;
-
-    // now update category and tag many to many table
-    if (categoryIds.length) {
-      const categoryData = categoryIds.map((catId) => {
-        return {
-          productId: productId,
-          categoryId: catId,
-        };
-      });
-
-      await prisma.productCategories.createMany({
-        data: categoryData,
-      });
-    }
-    if (tagIds.length) {
-      const tagData = tagIds.map((tagId) => {
-        return {
-          productId: productId,
-          tagId: tagId,
-        };
-      });
-
-      await prisma.productTags.createMany({
-        data: tagData,
-      });
-    }
-
-    product = await prisma.product.findUnique({
-      where: {
-        id: productId,
-      },
-      include: {
-        productCategories: {
-          include: {
-            category: true,
-          },
-        },
-        productTags: {
-          include: {
-            tag: true,
-          },
-        },
-      },
-    });
-
-    res.status(200).json(product);
-  } catch (error) {
-    // console.error(error)
-    res
-      .status(500)
-      .send("Error creating product on the Server" + JSON.stringify(error));
   }
 };
 
