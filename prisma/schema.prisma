@@ -101,7 +101,7 @@ model ParentDonations {
   date     DateTime
   amount   Decimal
   parent   Parent   @relation(fields: [parentId], references: [id])
-  Club     Club     @relation(fields: [clubId], references: [id])
+  club     Club     @relation(fields: [clubId], references: [id])
   clubId   String
   parentId String
 }
@@ -111,7 +111,7 @@ model parentWalletSpend {
   amount   Decimal
   order    Order   @relation(fields: [orderId], references: [id])
   orderId  String  @unique
-  Parent   Parent  @relation(fields: [parentId], references: [id])
+  parent   Parent  @relation(fields: [parentId], references: [id])
   parentId String
 }
 

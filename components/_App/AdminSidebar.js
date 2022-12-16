@@ -40,12 +40,21 @@ const AdminSidebar = ({ children, user }) => {
               </Menu.Item>
               <Menu.Item
                 as="a"
+                onClick={() => router.push("/admin/products")}
+                active={isActive("/admin/products")}
+              >
+                <Icon name="table" />
+                Products
+              </Menu.Item>
+              {/* 
+              <Menu.Item
+                as="a"
                 onClick={() => router.push("/admin/add-new-product")}
                 active={isActive("/admin/add-new-product")}
               >
                 <Icon name="add square" />
                 Create Product
-              </Menu.Item>
+              </Menu.Item>*/}
               <Menu.Item
                 as="a"
                 onClick={() => router.push("/admin/orders")}

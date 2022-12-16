@@ -93,6 +93,7 @@ export default async (req, res) => {
               tag: true,
             },
           },
+          store: true,
         },
         ...(pageSize && { skip: skips, take: pageSize }),
       });
@@ -113,6 +114,7 @@ export default async (req, res) => {
               tag: true,
             },
           },
+          store: true,
         },
         ...(pageSize && { skip: skips, take: pageSize }),
       });

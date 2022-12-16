@@ -1,24 +1,21 @@
-import React from "react";
+import Select from "react-select";
 
-function CategoryFilter({ products, selectProd = 0, handleSelectProd }) {
-  const sortedProducts = products
-    .filter((prod) => prod.paid_amount > 0)
-    .sort((prodA, prodB) => {
-      return prodA.product_id < prodB.product_id ? -1 : 1;
-    });
-  const prodOptions = sortedProducts.map((prodInfo) => {
-    const prodId = prodInfo.product_id;
-    const prodTitle = prodInfo.title.substring(0, 80);
-    return (
-      <option key={prodId} value={prodId}>{`${prodId}: ${prodTitle}`}</option>
-    );
+function CategoryFilter({ categories, selectCat = 0, handleSelectCat }) {
+  const sortedCats = categories.sort();
+  let catOptions = sortedCats.map((catInfo) => {
+    return { value: catInfo.name, label: catInfo.name };
   });
+  catOptions.unshift({ value: 0, label: "View All Categories" });
 
   return (
-    <select value={selectProd} onChange={handleSelectProd}>
-      <option value="0">View All Products</option>
-      {prodOptions}
-    </select>
+    <Select
+      value={selectCat}
+      onChange={handleSelectCat}
+      instanceId="category-selection"
+      placeholder="Select by Category"
+      isSearchable
+      options={catOptions}
+    ></Select>
   );
 }
 
