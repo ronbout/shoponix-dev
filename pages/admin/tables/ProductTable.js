@@ -2,9 +2,8 @@ import React, { useMemo, useState } from "react";
 import { useTable, useSortBy, useGlobalFilter } from "react-table";
 import currency from "../../../utils/currency";
 import Link from "next/link";
-import CategoryFilter from "./categoryFilter";
+import CategoryFilter from "./CategoryFilter";
 import MerchantFilter from "./MerchantFilter";
-// import CategoryFilter from "../CategoryFilter";
 
 function ProductTable({ productData, categories, merchants }) {
   const [selectedCategoryId, setSelectedCategoryId] = useState({
